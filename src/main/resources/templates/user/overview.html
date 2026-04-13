@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Gebruikersoverzicht</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>
+        Gebruikersoverzicht
+    </h1>
+
+    <div th:each="user : ${allUsers}">
+        <p th:text="${user.firstName}"></p>
+        <p th:text="${user.lastName}"></p>
+    </div>
+</div>
+
+</body>
+</html>
