@@ -12,9 +12,13 @@
     </h1>
 
     <div th:each="user : ${allUsers}">
-        <p th:text="${user.firstName}"></p>
-        <p th:text="${user.lastName}"></p>
+        <p>
+            <span th:text="${user.firstName}">Voornaam</span>
+            <span th:text="${user.lastName}">Achternaam</span>
+        </p>
     </div>
+
+    <a th:href="@{/info/add}">Gebruikersinformatie toevoegen</a>
 </div>
 
 </body>

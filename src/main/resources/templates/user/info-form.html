@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Persoonlijke informatie</title>
 </head>
 <body>
+    <h1>Persoonlijke informatie toevoegen</h1>
 
+    <form th:action="@{/info/save}" th:object="${newUser}" method="post">
+
+        <div>
+            <label th:for="*{firstName}">Voornaam</label>
+            <input type="text" th:id="*{firstName}" th:field="*{firstName}">
+        </div>
+
+        <div>
+            <label th:for="*{lastName}">Achternaam</label>
+            <input type="text" th:id="*{lastName}" th:field="*{lastName}">
+        </div>
+
+        <div>
+            <label th:for="*{birthYear}">Geboortejaar</label>
+            <input type="number" th:id="*{birthYear}" th:field="*{birthYear}">
+        </div>
+
+        <div>
+            <label th:for="*{futureEmployer}">Toekomstige werkgever</label>
+            <input type="text" th:id="*{futureEmployer}" th:field="*{futureEmployer}">
+        </div>
+
+        <div>
+            <label th:for="*{bio}">Vertel iets over jezelf</label>
+            <textarea th:id="*{bio}" th:field="*{bio}"></textarea>
+        </div>
+
+
+        <button type="submit">Insturen</button>
+
+    </form>
 </body>
 </html>
