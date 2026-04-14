@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Gebruikersoverzicht</title>
@@ -11,14 +11,31 @@
         Gebruikersoverzicht
     </h1>
 
-    <div th:each="user : ${allUsers}">
-        <p>
-            <span th:text="${user.firstName}">Voornaam</span>
-            <span th:text="${user.lastName}">Achternaam</span>
-        </p>
-    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Voornaam</th>
+            <th>Achternaam</th>
+            <th>Geboortejaar</th>
+            <th>Toekomstige werkgever</th>
+            <th>Bio</th>
+        </tr>
+        </thead>
+        <tbody>
 
-    <a th:href="@{/info/add}">Gebruikersinformatie toevoegen</a>
+        <tr th:each="user : ${allUsers}">
+            <td th:text="${user.firstName}">Voornaam</td>
+            <td th:text="${user.lastName}">Achternaam</td>
+            <td th:text="${user.birthYear}">2000</td>
+            <td th:text="${user.futureEmployer}">Bedrijf</td>
+            <td th:text="${user.bio}">Bio tekst komt hier</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <p><a th:href="@{/info/add}">Gebruikersinformatie toevoegen</a></p>
+    <p><a th:href="@{/}">Terug naar start</a></p>
 </div>
 
 </body>

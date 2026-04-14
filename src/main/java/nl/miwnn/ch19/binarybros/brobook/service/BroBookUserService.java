@@ -1,25 +1,29 @@
-package nl.miwnn.ch19.binarybros.brobook.service;
 
 /*
  * @author Mart Stukje
- * !! Doel van programma
  * */
 
-import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
-import org.springframework.stereotype.Service;
+package nl.miwnn.ch19.binarybros.brobook.service;
 
-import java.util.ArrayList;
+import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
+import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class BroBookUserService {
 
-    public List<BroBookUser> getAllUsers(){
-        List<BroBookUser> users = new ArrayList<>();
-        users.add(new BroBookUser("Mart", "Stukje", "user"));
-        users.add(new BroBookUser("Paul", "Rademaker", "user"));
+    private final BroBookUserRepository userRepository;
 
-        return users;
+    public BroBookUserService(BroBookUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
+    public List<BroBookUser> findAll() {
+        return userRepository.findAll();
+    }
+
+    public void save(BroBookUser user) {
+        userRepository.save(user);
+    }
 }

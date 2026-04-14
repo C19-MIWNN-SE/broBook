@@ -1,26 +1,41 @@
 package nl.miwnn.ch19.binarybros.brobook.model;
 
-/*
- * @author Mart Stukje
- * !! Doel van programma
- * */
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "BroBookUsers")
 public class BroBookUser {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String firstName;
     private String lastName;
-    private int birthYear;
+    private Integer birthYear;
     private String futureEmployer;
+    private String Role;
+    @Column(columnDefinition = "TEXT")
     private String bio;
-    private String role;
 
-    public BroBookUser() {
-    }
 
-    public BroBookUser(String firstName, String lastName, String role) {
+    public BroBookUser() {}
+
+    public BroBookUser(String firstName, String lastName, Integer birthYear, String futureEmployer, String bio) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
+        this.birthYear = birthYear;
+        this.futureEmployer = futureEmployer;
+        this.bio = bio;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -39,19 +54,11 @@ public class BroBookUser {
         this.lastName = lastName;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(int birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
 
@@ -69,5 +76,13 @@ public class BroBookUser {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String role) {
+        Role = role;
     }
 }
