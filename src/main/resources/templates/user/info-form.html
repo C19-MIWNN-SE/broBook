@@ -7,7 +7,10 @@
 <body>
     <h1>Persoonlijke informatie toevoegen</h1>
 
-    <form th:action="@{/info/save}" th:object="${newUser}" method="post">
+    <form th:action="@{/info/save}"
+          th:object="${newUser}"
+          method="post"
+          enctype="multipart/form-data">
 
         <div>
             <label th:for="*{firstName}">Voornaam</label>
@@ -30,8 +33,17 @@
         </div>
 
         <div>
-            <label th:for="*{bio}">Vertel iets over jezelf</label>
+            <label th:for="*{bio}"
+            >Vertel iets over jezelf</label>
             <textarea th:id="*{bio}" th:field="*{bio}"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="imageFile" class="form-label text-secondary mb-1">Profielfoto</label>
+            <input type="file" id="imageFile"
+                   name="imageFile"
+                   accept="image/*"
+                   class="form-control form-control-lg text-secondary">
         </div>
 
 

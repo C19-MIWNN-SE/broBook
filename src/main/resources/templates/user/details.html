@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${shownUser.getFullName()}">Naam</title>
+</head>
+<body>
+<h1><span th:text="${shownUser.getFullName()}"></span>'s informatie</h1>
+
+<!--//TODO image toevoegen-->
+<img th:src="@{/image/{id}(id=${shownUser.id})}">
+<p th:text="${shownUser.bio}">Bio</p>
+<p>Geboortejaar: <span th:text="${shownUser.birthYear}"></span></p>
+<p>Toekomstige werkgever: <span th:text="${shownUser.futureEmployer}"></span></p>
+</body>
+</html>

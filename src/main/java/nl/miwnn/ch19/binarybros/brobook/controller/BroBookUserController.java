@@ -1,13 +1,14 @@
 package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
+import nl.miwnn.ch19.binarybros.brobook.model.Image;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -34,10 +35,21 @@ public class BroBookUserController {
     }
 
     @PostMapping("/info/save")
-    public String saveInfoForm(@ModelAttribute BroBookUser newUser) {
+    public String saveInfoForm(@ModelAttribute BroBookUser newUser,
+                               @RequestParam("imageFile") MultipartFile imageFile) {
+
         newUser.setRole("user");
-        broBookUserService.save(newUser);
+        broBookUserService.save(newUser, imageFile);
 
         return "redirect:/user/all";
+    }
+
+    @GetMapping("/info/detail/{id}")
+    public String getDetailPage(@PathVariable Long id,
+                                Model model) {
+        BroBookUser broBookUser = broBookUserService.getUserById(id);
+
+        model.addAttribute("shownUser", broBookUser);
+        return "user/details";
     }
 }

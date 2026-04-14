@@ -19,6 +19,10 @@ public class BroBookUser {
     @Column(columnDefinition = "TEXT")
     private String bio;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image profilePicture;
+
 
     public BroBookUser() {}
 
@@ -36,6 +40,10 @@ public class BroBookUser {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     public String getFirstName() {
@@ -84,5 +92,13 @@ public class BroBookUser {
 
     public void setRole(String role) {
         Role = role;
+    }
+
+    public Image getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Image profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }
