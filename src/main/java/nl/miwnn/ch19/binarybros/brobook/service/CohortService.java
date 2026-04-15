@@ -25,6 +25,10 @@ public class CohortService {
         return cohortRepository.findAll();
     }
 
+    public Cohort getCohortById(Long id) {
+        return cohortRepository.findById(id).orElseThrow();
+    }
+
     public void save(Cohort cohort){
         cohortRepository.save(cohort);
     }

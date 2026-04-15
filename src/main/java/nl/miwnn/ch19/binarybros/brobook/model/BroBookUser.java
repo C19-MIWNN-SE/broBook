@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "BroBookUsers")
@@ -31,11 +32,16 @@ public class BroBookUser implements UserDetails {
 
     @Column(columnDefinition = "TEXT")
     private String bio;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image profilePicture;
-
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "cohort_participants",
+            joinColumns = @JoinColumn(name = "participants_id"),
+            inverseJoinColumns = @JoinColumn(name = "cohort_id")
+    )
+    private List<Cohort> cohorts = new ArrayList<>();
 
     public BroBookUser() {}
 
@@ -156,5 +162,13 @@ public class BroBookUser implements UserDetails {
 
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public List<Cohort> getCohorts() {
+        return cohorts;
+    }
+
+    public void setCohorts(List<Cohort> cohorts) {
+        this.cohorts = cohorts;
     }
 }

@@ -3,6 +3,7 @@ package nl.miwnn.ch19.binarybros.brobook.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class Cohort {
     private String subject;
 
     @ManyToMany
-    private List<BroBookUser> participants;
+    private List<BroBookUser> participants = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -63,4 +64,6 @@ public class Cohort {
     public Long getId() {
         return id;
     }
+
+
 }
