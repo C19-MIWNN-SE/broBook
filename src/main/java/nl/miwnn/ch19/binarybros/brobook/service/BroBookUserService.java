@@ -36,7 +36,7 @@ public class BroBookUserService {
     }
 
     public void save(BroBookUser user, MultipartFile imageFile) {
-        if (imageFile != null) {
+        if (imageFile != null && !imageFile.isEmpty()) {
             Image image = new Image();
             try {
                 image.setData(imageFile.getBytes());

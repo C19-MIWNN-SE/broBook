@@ -9,8 +9,14 @@
 <h1><span th:text="${shownUser.getFullName()}"></span>'s informatie</h1>
 
 <!--//TODO image toevoegen-->
-<img th:src="@{/image/{id}(id=${shownUser.id})}">
-<p th:text="${shownUser.bio}">Bio</p>
+<img th:if="${shownUser.profilePicture != null}"
+     style="width: 40px"
+     th:src="@{/image/{id}(id=${shownUser.profilePicture.id})}">
+
+<img th:unless="${shownUser.profilePicture != null}"
+     style="width: 40px"
+     th:src="|https://placehold.co/40x40?text=${shownUser.firstName}|">
+
 <p>Geboortedatum: <span th:text="${shownUser.birthDate}"></span></p>
 <p>Toekomstige werkgever: <span th:text="${shownUser.futureEmployer}"></span></p>
 </body>
