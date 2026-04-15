@@ -9,6 +9,9 @@ import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Image;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.ImageRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class BroBookUserService {
+public class BroBookUserService implements UserDetailsService {
 
     private final BroBookUserRepository userRepository;
     private final ImageRepository imageRepository;
@@ -25,6 +28,13 @@ public class BroBookUserService {
                               ImageRepository imageRepository) {
         this.userRepository = userRepository;
         this.imageRepository = imageRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "Gebruiker niet gevonden: " + username));
     }
 
     public List<BroBookUser> findAll() {

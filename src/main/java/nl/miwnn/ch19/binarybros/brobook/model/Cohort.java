@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author Paul Rademaker
- *Cohorts of Make IT Work of which multiple students/teachers can be part of
+ * Cohorts of Make IT Work of which multiple students/teachers can be part of
  */
 
 @Entity
@@ -23,7 +23,6 @@ public class Cohort {
 
     @ManyToMany
     private List<BroBookUser> participants;
-
 
     public String getName() {
         return name;
