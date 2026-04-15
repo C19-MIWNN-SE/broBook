@@ -21,9 +21,16 @@ public class Cohort {
     private String name;
     private LocalDate startDate;
     private String subject;
-
     @ManyToMany
     private List<BroBookUser> participants = new ArrayList<>();
+
+    public Cohort(String name, String subject) {
+        this.name = name;
+        this.subject = subject;
+    }
+
+    public Cohort() {
+    }
 
     public String getName() {
         return name;

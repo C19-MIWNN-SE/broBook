@@ -22,7 +22,6 @@ public class BroBookUser implements UserDetails {
     private String username;
     private String password;
     private String role;
-
     @Column(nullable = false)
     private String firstName;
 
@@ -45,11 +44,25 @@ public class BroBookUser implements UserDetails {
 
     public BroBookUser() {}
 
+    public BroBookUser(String firstName, String lastName, String futureEmployer, LocalDate birthDate, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.futureEmployer = futureEmployer;
+        this.birthDate = birthDate;
+        this.role = role;
+    }
+
     public BroBookUser(String firstName, String lastName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         setUsername();
         this.password = password;
+        this.role = role;
+    }
+
+    public BroBookUser(String firstName, String lastName, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.role = role;
     }
 
