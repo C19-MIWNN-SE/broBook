@@ -23,8 +23,8 @@
         </div>
 
         <div>
-            <label th:for="*{birthYear}">Geboortejaar</label>
-            <input type="number" th:id="*{birthYear}" th:field="*{birthYear}">
+            <label th:for="*{birthDate}">Geboortedatum</label>
+            <input type="date" th:id="*{birthDate}" th:field="*{birthDate}">
         </div>
 
         <div>
@@ -48,6 +48,9 @@
 
 
         <button type="submit">Insturen</button>
+        <button type="reset">Formulier leegmaken</button>
+        <br>
+        <a th:href="@{/user/all}">Annuleer, terug naar het overzicht</a>
 
     </form>
 </body>

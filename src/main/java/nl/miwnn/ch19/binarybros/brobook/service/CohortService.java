@@ -5,6 +5,8 @@ import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Paul Rademaker
  * ---- VERVANG MIJ ----
@@ -17,6 +19,10 @@ public class CohortService {
 
     public CohortService(CohortRepository cohortRepository) {
         this.cohortRepository = cohortRepository;
+    }
+
+    public List<Cohort> findAll() {
+        return cohortRepository.findAll();
     }
 
     public void save(Cohort cohort){

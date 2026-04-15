@@ -19,6 +19,7 @@ public class Cohort {
 
     private String name;
     private LocalDate startDate;
+    private String subject;
 
     @ManyToMany
     private List<BroBookUser> participants;
@@ -38,6 +39,14 @@ public class Cohort {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public List<BroBookUser> getParticipants() {

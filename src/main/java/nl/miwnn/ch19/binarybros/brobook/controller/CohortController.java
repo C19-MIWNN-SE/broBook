@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @author Paul Rademaker
- * ---- Programma dat dingen doet ----
- * ---- VERVANG MIJ ----
+ * Handles all requests regarding cohorts
  */
 
 @Controller
@@ -34,6 +33,12 @@ public class CohortController {
 
         cohortService.save(cohort);
         return "redirect:/cohort/all";
+    }
+
+    @GetMapping("/cohort/all")
+    public String showCohortOverview(Model model) {
+        model.addAttribute("allCohorts", cohortService.findAll());
+        return "cohort/overview";
     }
 
 }

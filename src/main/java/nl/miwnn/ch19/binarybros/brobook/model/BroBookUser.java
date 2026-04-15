@@ -2,6 +2,8 @@ package nl.miwnn.ch19.binarybros.brobook.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "BroBookUsers")
 public class BroBookUser {
@@ -13,7 +15,7 @@ public class BroBookUser {
     @Column(nullable = false)
     private String firstName;
     private String lastName;
-    private Integer birthYear;
+    private LocalDate birthDate;
     private String futureEmployer;
     private String Role;
     @Column(columnDefinition = "TEXT")
@@ -26,10 +28,10 @@ public class BroBookUser {
 
     public BroBookUser() {}
 
-    public BroBookUser(String firstName, String lastName, Integer birthYear, String futureEmployer, String bio) {
+    public BroBookUser(String firstName, String lastName, LocalDate birthDate, String futureEmployer, String bio) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthYear = birthYear;
+        this.birthDate = birthDate;
         this.futureEmployer = futureEmployer;
         this.bio = bio;
     }
@@ -62,12 +64,12 @@ public class BroBookUser {
         this.lastName = lastName;
     }
 
-    public Integer getBirthYear() {
-        return birthYear;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthYear(Integer birthYear) {
-        this.birthYear = birthYear;
+    public void setBirthDate(LocalDate birthYear) {
+        this.birthDate = birthYear;
     }
 
     public String getFutureEmployer() {

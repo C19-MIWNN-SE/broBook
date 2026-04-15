@@ -20,13 +20,19 @@
             <label th:for="*{startDate}">Startdatum Cohort</label>
             <input type="date" th:id="*{startDate}" th:field="*{startDate}">
         </div>
+        <div>
+            <label th:for="*{subject}">Opleidingsrichting</label>
+            <input type="text" th:id="*{subject}" th:field="*{subject}">
+        </div>
 
         <button type="submit">Opslaan</button>
+        <button type="reset">Formulier leegmaken</button>
+        <br>
+        <a th:href="@{/cohort/all}">Annuleer, terug naar het overzicht</a>
 
 
     </form>
 </div>
-
 
 </body>
 </html>
