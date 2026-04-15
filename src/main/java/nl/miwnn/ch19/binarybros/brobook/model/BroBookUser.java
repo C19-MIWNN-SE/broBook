@@ -39,12 +39,12 @@ public class BroBookUser implements UserDetails {
 
     public BroBookUser() {}
 
-    public BroBookUser(String firstName, String lastName, LocalDate birthDate, String futureEmployer, String bio) {
+    public BroBookUser(String firstName, String lastName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.futureEmployer = futureEmployer;
-        this.bio = bio;
+        setUsername();
+        this.password = password;
+        this.role = role;
     }
 
     @Override
@@ -55,6 +55,10 @@ public class BroBookUser implements UserDetails {
     @Override
     public @Nullable String getPassword() {
         return password;
+    }
+
+    private void setUsername() {
+        this.username = toTitleCase(firstName) + toTitleCase(lastName);
     }
 
     @Override
@@ -80,6 +84,10 @@ public class BroBookUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    private String toTitleCase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
     public Long getId() {
