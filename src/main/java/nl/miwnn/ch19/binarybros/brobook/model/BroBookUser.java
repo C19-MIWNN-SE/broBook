@@ -1,25 +1,35 @@
 package nl.miwnn.ch19.binarybros.brobook.model;
 
 import jakarta.persistence.*;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "BroBookUsers")
-public class BroBookUser {
+public class BroBookUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
+    private String password;
+    private String role;
+
     @Column(nullable = false)
     private String firstName;
+
     private String lastName;
     private LocalDate birthDate;
     private String futureEmployer;
-    private String Role;
+
     @Column(columnDefinition = "TEXT")
     private String bio;
     @OneToOne(cascade = CascadeType.ALL)
@@ -35,12 +45,55 @@ public class BroBookUser {
 
     public BroBookUser() {}
 
-    public BroBookUser(String firstName, String lastName, LocalDate birthDate, String futureEmployer, String bio) {
+    public BroBookUser(String firstName, String lastName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.futureEmployer = futureEmployer;
-        this.bio = bio;
+        setUsername();
+        this.password = password;
+        this.role = role;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public @Nullable String getPassword() {
+        return password;
+    }
+
+    private void setUsername() {
+        this.username = toTitleCase(firstName) + toTitleCase(lastName);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    private String toTitleCase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
     public Long getId() {
@@ -96,11 +149,11 @@ public class BroBookUser {
     }
 
     public String getRole() {
-        return Role;
+        return role;
     }
 
     public void setRole(String role) {
-        Role = role;
+        this.role = role;
     }
 
     public Image getProfilePicture() {
