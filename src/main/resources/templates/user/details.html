@@ -11,7 +11,7 @@
 <!--//TODO image toevoegen-->
 <img th:src="@{/image/{id}(id=${shownUser.id})}">
 <p th:text="${shownUser.bio}">Bio</p>
-<p>Geboortejaar: <span th:text="${shownUser.birthYear}"></span></p>
+<p>Geboortedatum: <span th:text="${shownUser.birthDate}"></span></p>
 <p>Toekomstige werkgever: <span th:text="${shownUser.futureEmployer}"></span></p>
 </body>
 </html>
