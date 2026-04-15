@@ -19,7 +19,10 @@
         </thead>
         <tbody>
         <tr th:each="cohort : ${allCohorts}">
-            <td th:text="${cohort.name}">Cohort Naam</td>
+            <td>
+                <a th:href="@{/cohort/details/{id}(id=${cohort.Id})}"
+                   th:text="${cohort.name}">Naam van cohort</a>
+            </td>
             <td th:text="${cohort.getSubject()}">Omschrijving</td>
 
         </tr>

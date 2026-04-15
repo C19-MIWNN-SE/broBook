@@ -3,6 +3,8 @@ package nl.miwnn.ch19.binarybros.brobook.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "BroBookUsers")
@@ -20,11 +22,16 @@ public class BroBookUser {
     private String Role;
     @Column(columnDefinition = "TEXT")
     private String bio;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image profilePicture;
-
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "cohort_participants",
+            joinColumns = @JoinColumn(name = "participants_id"),
+            inverseJoinColumns = @JoinColumn(name = "cohort_id")
+    )
+    private List<Cohort> cohorts = new ArrayList<>();
 
     public BroBookUser() {}
 
@@ -102,5 +109,13 @@ public class BroBookUser {
 
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public List<Cohort> getCohorts() {
+        return cohorts;
+    }
+
+    public void setCohorts(List<Cohort> cohorts) {
+        this.cohorts = cohorts;
     }
 }

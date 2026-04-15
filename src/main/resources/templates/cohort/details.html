@@ -2,14 +2,46 @@
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Cohort overview</title>
+    <title>Cohort details</title>
 </head>
 <body>
-
 <div class="container">
-    <h1></h1>
-</div>
+    <h1 th:text="'Leden van cohort: ' + ${selectedCohort.name}">Cohort naam</h1>
+    <p th:text="${selectedCohort.subject}">Opleidingsrichting</p>
 
+    <hr>
+
+    <h3>Gekoppelde deelnemers:</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Foto</th>
+            <th>Naam</th>
+            <th>Rol</th>
+            <th>Actie</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${selectedCohort.participants}">
+                <td>
+                    <img th:src="@{/image/{id}(id=${user.id})}" alt="profiel-foto" style="width: 30px">
+                </td>
+                <td th:text="${user.fullName}"> Naam </td>
+                <td th:text="${user.role}"> Rol </td>
+                <td>
+                    <a th:href="@{/info/detail/{id}(id=${user.id})}">Bekijk profiel </a>
+                </td>
+            </tr>
+            <tr th:if="${selectedCohort.participants.isEmpty()}">
+                <td colspan="4"> Er zijn nog deelnemers bekend voor dit cohort</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/cohort/all}">Terug naar het cohort overzicht</a>
+
+</div>
 
 </body>
 </html>

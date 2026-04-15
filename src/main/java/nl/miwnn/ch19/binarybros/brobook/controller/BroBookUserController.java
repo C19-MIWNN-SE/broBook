@@ -1,8 +1,10 @@
 package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
+import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.model.Image;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
+import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +17,11 @@ import java.util.List;
 public class BroBookUserController {
 
     private final BroBookUserService broBookUserService;
+    private final CohortService cohortService;
 
-
-    public BroBookUserController(BroBookUserService broBookUserService) {
+    public BroBookUserController(BroBookUserService broBookUserService, CohortService cohortService) {
         this.broBookUserService = broBookUserService;
-
+        this.cohortService = cohortService;
     }
 
     @GetMapping("/user/all")
@@ -30,7 +32,13 @@ public class BroBookUserController {
 
     @GetMapping("/info/add")
     public String showNewInfoForm(Model model) {
+
         model.addAttribute("newUser", new BroBookUser());
+
+        List<Cohort> cohorts = cohortService.findAll();
+
+        model.addAttribute("allCohorts", cohorts);
+
         return "user/info-form";
     }
 
