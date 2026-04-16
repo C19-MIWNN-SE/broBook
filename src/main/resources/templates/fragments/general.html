@@ -1,23 +1,67 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="header">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <title th:text="${paginaTitel} ?: 'broBook'"></title>
+    <style>
+        :root {
+            --bro-purple: #7930A1;
+            --bro-orange: #f39200;
+            --bro-light: #f8f9fa;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: var(--bro-purple) !important;
+            border-bottom: 4px solid var(--bro-orange);
+        }
+        .btn-primary {
+            background-color: var(--bro-orange) !important;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background-color: #d68100 !important;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .cohort-header {
+            background: linear-gradient(135deg, var(--bro-purple) 0%, #BB81D9 100%);
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+        }
+    </style>
+
 </head>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark  mb-4">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-            broBook
+        <a class="navbar-brand fw-bold fs-3" href="/">
+            <span style="color: var(--bro-orange)">bro</span>Book
         </a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link"
-               href="/user/all">Gebruikers</a>
-            <a class="nav-link"
-               href="/cohort/all">Cohorts</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link px-3" href="/user/all">Gebruikers</a>
+                <a class="nav-link px-3" href="/cohort/all">Cohorten</a>
+                <a class="btn btn-outline-light ms-lg-3" href="/cohort/add">+ Nieuw Cohort</a>
+            </div>
         </div>
     </div>
 </nav>
@@ -27,4 +71,3 @@
     <p>broBook - Binary Bro's</p>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </footer>
-</html>
