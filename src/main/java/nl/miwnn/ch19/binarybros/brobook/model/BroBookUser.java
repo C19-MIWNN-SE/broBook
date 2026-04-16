@@ -31,9 +31,11 @@ public class BroBookUser implements UserDetails {
 
     @Column(columnDefinition = "TEXT")
     private String bio;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image profilePicture;
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "cohort_participants",

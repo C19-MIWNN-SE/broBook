@@ -33,7 +33,10 @@ public class BroBookSecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/"
+                                "/",
+                                "/css/**",
+                                "/image/**",
+                                "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).formLogin(form -> form

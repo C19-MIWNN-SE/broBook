@@ -1,0 +1,28 @@
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #f8fafc;
+}
+
+.serif {
+    font-family: 'Playfair Display', serif;
+}
+
+.photo-col {
+    background: linear-gradient(160deg, #1a3a6e, #0f2445);
+}
+
+.profile-picture {
+    border: 4px solid rgba(201, 168, 76, .55);
+}
+
+.profile-initials {
+    background: #2a4a7f;
+    color: rgba(255, 255, 255, .8);
+    border: 4px solid rgba(201, 168, 76, .55);
+    aspect-ratio: 1 / 1;
+}
+
+.info-tile {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}

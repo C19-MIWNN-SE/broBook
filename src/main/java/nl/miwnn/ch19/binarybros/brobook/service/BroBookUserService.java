@@ -22,12 +22,12 @@ import java.util.List;
 public class BroBookUserService implements UserDetailsService {
 
     private final BroBookUserRepository userRepository;
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     public BroBookUserService(BroBookUserRepository userRepository,
-                              ImageRepository imageRepository) {
+                              ImageService imageService) {
         this.userRepository = userRepository;
-        this.imageRepository = imageRepository;
+        this.imageService = imageService;
     }
 
     @Override
@@ -47,15 +47,7 @@ public class BroBookUserService implements UserDetailsService {
 
     public void save(BroBookUser user, MultipartFile imageFile) {
         if (imageFile != null && !imageFile.isEmpty()) {
-            Image image = new Image();
-            try {
-                image.setData(imageFile.getBytes());
-            } catch (IOException ioException) {
-                throw new IllegalStateException("Dit bestand kon niet worden opgeslagen", ioException);
-            }
-            image.setContentType(imageFile.getContentType());
-            imageRepository.save(image);
-            user.setProfilePicture(image);
+            user.setProfilePicture(imageService.saveImage(imageFile));
         }
         userRepository.save(user);
     }

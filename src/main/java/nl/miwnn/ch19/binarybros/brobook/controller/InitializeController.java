@@ -8,6 +8,8 @@ import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
+import nl.miwnn.ch19.binarybros.brobook.repository.ImageRepository;
+import nl.miwnn.ch19.binarybros.brobook.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -23,15 +25,19 @@ public class InitializeController {
     private final BroBookUserRepository broBookUserRepository;
     private final CohortRepository cohortRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
 
     private static final Logger log = LoggerFactory.getLogger(InitializeController.class);
 
-    public InitializeController(BroBookUserRepository broBookUserRepository, CohortRepository cohortRepository,
-                                PasswordEncoder passwordEncoder) {
+    public InitializeController(BroBookUserRepository broBookUserRepository,
+                                CohortRepository cohortRepository,
+                                PasswordEncoder passwordEncoder,
+                                ImageService imageService) {
         this.broBookUserRepository = broBookUserRepository;
         this.cohortRepository = cohortRepository;
         this.passwordEncoder = passwordEncoder;
+        this.imageService = imageService;
     }
 
     @EventListener(ContextRefreshedEvent.class)
