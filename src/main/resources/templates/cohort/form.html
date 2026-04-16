@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head th:replace="~{fragments/general :: header}">
     <title>Cohort overview</title>
 </head>
 <body>
+<div th:replace="~{fragments/general :: navbar}"></div>
 
-<div class="container">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="fw-bold mb-4" style="color: var(--bro-purple)">Nieuw Cohort</h2>
+                <form th:action="@{/cohort/save}" th:object="${newCohort}" method="post">
 
-    <form th:action="@{/cohort/save}"
-          th:object="${newCohort}"
-          method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Cohort naam</label>
+                        <input type="text" class="form-control form-control-lg" th:field="*{name}"
+                               placeholder="Bijv. Cohort 19">
+                    </div>
 
-        <div>
-            <label th:for="*{name}">Cohort naam</label>
-            <input type="text" th:id="*{name}" th:field="*{name}">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Startdatum</label>
+                        <input type="date" class="form-control" th:field="*{startDate}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Omscholingsrichting</label>
+                        <input type="text" class="form-control" th:field="*{subject}"
+                               placeholder="Richting van de omscholing">
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Cohort Opslaan</button>
+                        <button type="reset" class="btn btn-light text-muted">Formulier leegmaken</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label th:for="*{startDate}">Startdatum Cohort</label>
-            <input type="date" th:id="*{startDate}" th:field="*{startDate}">
-        </div>
-        <div>
-            <label th:for="*{subject}">Opleidingsrichting</label>
-            <input type="text" th:id="*{subject}" th:field="*{subject}">
-        </div>
-
-        <button type="submit">Opslaan</button>
-        <button type="reset">Formulier leegmaken</button>
-        <br>
-        <a th:href="@{/cohort/all}">Annuleer, terug naar het overzicht</a>
-
-
-    </form>
+    </div>
 </div>
-
 </body>
 </html>

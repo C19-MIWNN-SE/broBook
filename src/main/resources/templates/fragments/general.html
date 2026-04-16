@@ -6,22 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${paginaTitel} ?: 'broBook'"></title>
     <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
     <link rel="stylesheet" th:href="@{/css/Style.css}">
+    <style>
+        :root {
+            --bro-purple: #7930A1;
+            --bro-orange: #f39200;
+            --bro-light: #f8f9fa;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: var(--bro-purple) !important;
+            border-bottom: 4px solid var(--bro-orange);
+        }
+        .btn-primary {
+            background-color: var(--bro-orange) !important;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background-color: #d68100 !important;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .cohort-header {
+            background: linear-gradient(135deg, var(--bro-purple) 0%, #BB81D9 100%);
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+        }
+    </style>
+
 </head>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark  mb-4">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-            broBook
+        <a class="navbar-brand fw-bold fs-3" href="/">
+            <span style="color: var(--bro-orange)">bro</span>Book
         </a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link"
-               href="/user/all">Gebruikers</a>
-            <a class="nav-link"
-               href="/cohort/all">Cohorts</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link px-3" href="/user/all">Gebruikers</a>
+                <a class="nav-link px-3" href="/cohort/all">Cohorten</a>
+                <a class="btn btn-outline-light ms-lg-3" href="/cohort/add">+ Nieuw Cohort</a>
+            </div>
         </div>
     </div>
 </nav>

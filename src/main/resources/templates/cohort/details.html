@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head th:replace="~{fragments/general :: header}">
     <title>Cohort details</title>
 </head>
 <body>
-<div class="container">
-    <h1 th:text="'Leden van cohort: ' + ${selectedCohort.name}">Cohort naam</h1>
-    <p th:text="${selectedCohort.subject}">Opleidingsrichting</p>
+<div th:replace="~{fragments/general :: navbar}"></div>
 
-    <hr>
-
-    <h3>Gekoppelde deelnemers:</h3>
-    <table>
-        <thead>
-        <tr>
-            <th>Foto</th>
-            <th>Naam</th>
-            <th>Rol</th>
-            <th>Actie</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user : ${selectedCohort.participants}">
-                <td>
-                    <img th:src="@{/image/{id}(id=${user.id})}" alt="profiel-foto" style="width: 30px">
-                </td>
-                <td th:text="${user.fullName}"> Naam </td>
-                <td th:text="${user.role}"> Rol </td>
-                <td>
-                    <a th:href="@{/info/detail/{id}(id=${user.id})}">Bekijk profiel </a>
-                </td>
-            </tr>
-            <tr th:if="${selectedCohort.participants.isEmpty()}">
-                <td colspan="4"> Er zijn nog deelnemers bekend voor dit cohort</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <br>
-    <a th:href="@{/cohort/all}">Terug naar het cohort overzicht</a>
-
+<div class="cohort-header text-center">
+    <div class="container">
+        <h1 class="display-4 fw-800" th:text="${selectedCohort.name}">Naam</h1>
+        <p class="lead" th:text="${selectedCohort.subject}">Opleiding</p>
+    </div>
 </div>
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card px-4 py-3">
+                <h3 class="fw-bold mb-4">Gekoppelde deelnemers</h3>
+
+                <div class="list-group list-group-flush">
+                    <div th:each="user : ${selectedCohort.participants}"
+                         class="list-group-item d-flex align-items-center py-3 border-0 border-bottom">
+                        <img th:src="@{/image/{id}(id=${user.id})}"
+                             class="rounded-circle me-3 shadow-sm"
+                             style="width: 60px; height: 60px; object-fit: cover; border: 2px solid var(--bro-orange)">
+
+                        <div class="flex-grow-1">
+                            <h5 class="mb-0 fw-bold" th:text="${user.fullName}">Naam</h5>
+                            <small class="text-muted" th:text="${user.role}">Rol</small>
+                        </div>
+
+                        <a th:href="@{/info/detail/{id}(id=${user.id})}"
+                           class="btn btn-sm btn-outline-primary">Profiel</a>
+                    </div>
+                </div>
+
+                <div th:if="${selectedCohort.participants.isEmpty()}" class="text-center py-5">
+                    <p class="text-muted">Nog geen deelnemers in dit cohort.</p>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a th:href="@{/cohort/all}" class="text-decoration-none text-muted">← Terug naar overzicht</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/general :: footer}"></div>
 </body>
 </html>
