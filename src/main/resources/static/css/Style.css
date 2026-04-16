@@ -1,6 +1,41 @@
+:root {
+    --bro-purple: #7930A1;
+    --bro-orange: #f39200;
+    --bro-light: #f8f9fa;
+}
+
 body {
-    font-family: 'DM Sans', sans-serif;
-    background-color: #f8fafc;
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.navbar {
+    background-color: var(--bro-purple) !important;
+    border-bottom: 4px solid var(--bro-orange);
+}
+.btn-primary {
+    background-color: var(--bro-orange) !important;
+    border: none;
+    font-weight: bold;
+}
+.btn-primary:hover {
+    background-color: #d68100 !important;
+}
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.cohort-header {
+    background: linear-gradient(135deg, var(--bro-purple) 0%, #BB81D9 100%);
+    color: white;
+    padding: 40px 0;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 30px;
 }
 
 .serif {
