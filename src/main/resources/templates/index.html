@@ -2,13 +2,15 @@
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <div th:replace="~{/fragments/general :: header}"></div>
     <title>broBook homepage</title>
 </head>
 <body>
 
+<nav th:replace="~{/fragments/general :: navbar}"></nav>
+
 <div class="container">
-    <h1>dit is een homepage</h1>
-    <p th:text="${productName}">Productnaam</p>
+    <h1 th:text="${productName}">broBook homepage</h1>
     <p>Welkom, als je niet kan inloggen, neem dan contact op met je docent</p>
 
     <a th:href="@{/user/all}">Ga naar het overzicht van de gebruikers</a>
@@ -18,6 +20,7 @@
     <a target="_blank" href="https://it-omscholing.nl/">Ga naar de make it work pagina</a>
 </div>
 
+<div th:replace="~{/fragments/general :: footer}"></div>
 
 </body>
 </html>
