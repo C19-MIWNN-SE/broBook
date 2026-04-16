@@ -4,20 +4,28 @@ package nl.miwnn.ch19.binarybros.brobook.controller;
  * @author Binary Bro's
  * */
 
+import com.opencsv.bean.CsvToBeanBuilder;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.model.Image;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
-import nl.miwnn.ch19.binarybros.brobook.repository.ImageRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDate;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 @Controller
 public class InitializeController {
@@ -26,6 +34,7 @@ public class InitializeController {
     private final CohortRepository cohortRepository;
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;
+    private final Random random = new Random();
 
 
     private static final Logger log = LoggerFactory.getLogger(InitializeController.class);
@@ -48,7 +57,7 @@ public class InitializeController {
         if (broBookUserRepository.count() == 0) {
             userSeed();
             studentSeed();
-            docentSeed();
+            teacherSeed();
         }
     }
 
@@ -59,26 +68,44 @@ public class InitializeController {
         broBookUserRepository.save(beheerder);
     }
 
-    private void studentSeed() {
-        broBookUserRepository.save(new BroBookUser(
-                "Paul", "Rademaker",
-                "IBM", LocalDate.parse("1991-04-03"), "Student"));
-        broBookUserRepository.save(new BroBookUser(
-                "Mart", "Stukje",
-                "Univé", LocalDate.parse("1997-01-01"), "Student"));
-        broBookUserRepository.save(new BroBookUser(
-                "Jan", "Jansen",
-                "Sopra Steria", LocalDate.parse("1995-01-01"), "Student"));
-        broBookUserRepository.save(new BroBookUser(
-                "Peter", "de Jong",
-                "De ree", LocalDate.parse("2001-01-01"), "Student"));
+    public void studentSeed() {
+        List<BroBookUser> students = readCsv("seedData/students.csv", BroBookUser.class);
+        List<Cohort> allCohorts = cohortRepository.findAll();
 
-        log.info("Test Studenten aangemaakt.");
+        for (int i = 0; i < students.size(); i++) {
+            BroBookUser student = students.get(i);
+            student.getCohorts().add(allCohorts.get(i % allCohorts.size()));
+            String testImageUrl = "https://i.pravatar.cc/300?img=" + ((i % 70) + 1);
+            Image savedImage = imageService.saveImageFromUrl(testImageUrl);
+            student.setProfilePicture(savedImage);
+            broBookUserRepository.save(student);
+        }
+
+        log.info("Teststudenten aangemaakt");
     }
 
-    private void docentSeed() {
-        broBookUserRepository.save(new BroBookUser("Vincent", "Velthuizen", "Docent"));
-        broBookUserRepository.save(new BroBookUser("Arjen", "Loermans", "Docent"));
+    public void teacherSeed() {
+        List<BroBookUser> teachers = readCsv("seedData/teachers.csv", BroBookUser.class);
+        List<Cohort> allCohorts = cohortRepository.findAll();
+
+        for (int i = 0; i < teachers.size(); i++) {
+            BroBookUser teacher = teachers.get(i);
+            if (i < 2) {
+                teacher.getCohorts().addAll(allCohorts);
+            } else {
+                List<Cohort> shuffledCohorts = new ArrayList<>(allCohorts);
+                Collections.shuffle(shuffledCohorts, random);
+                int amount = 2 + random.nextInt(allCohorts.size() - 1);
+                teacher.getCohorts().addAll(shuffledCohorts.subList(0, amount));
+            }
+
+            String testImageUrl = "https://i.pravatar.cc/300?img=" + ((i % 70) + 1);
+            Image savedImage = imageService.saveImageFromUrl(testImageUrl);
+            teacher.setProfilePicture(savedImage);
+            broBookUserRepository.save(teacher);
+        }
+
+        log.info("Testdocenten aangemaakt");
     }
 
     private void cohortSeed() {
@@ -89,5 +116,19 @@ public class InitializeController {
         cohortRepository.save(new Cohort("Cohort 5", "Software Engineering"));
         cohortRepository.save(new Cohort("Cohort 6", "Functioneel Beheer"));
 
+    }
+
+    private <T> List<T> readCsv(String resourcePath, Class<T> type) {
+        ClassPathResource resource = new ClassPathResource(resourcePath);
+        try {
+            Reader reader = new InputStreamReader(resource.getInputStream());
+            return new CsvToBeanBuilder<T>(reader)
+                    .withType(type)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build()
+                    .parse();
+        } catch (IOException ioException) {
+            throw new IllegalStateException("CSV file could not be loaded: " + resourcePath, ioException);
+        }
     }
 }

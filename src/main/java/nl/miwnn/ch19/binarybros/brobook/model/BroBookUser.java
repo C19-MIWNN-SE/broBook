@@ -1,5 +1,6 @@
 package nl.miwnn.ch19.binarybros.brobook.model;
 
+import com.opencsv.bean.CsvDate;
 import jakarta.persistence.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,17 +27,20 @@ public class BroBookUser implements UserDetails {
     private String firstName;
 
     private String lastName;
+
+    @CsvDate("yyyy-MM-dd")
     private LocalDate birthDate;
+
     private String futureEmployer;
 
     @Column(columnDefinition = "TEXT")
     private String bio;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "image_id")
     private Image profilePicture;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(
             name = "cohort_participants",
             joinColumns = @JoinColumn(name = "participants_id"),
@@ -46,31 +50,24 @@ public class BroBookUser implements UserDetails {
 
     public BroBookUser() {}
 
-    public BroBookUser(String firstName, String lastName, String futureEmployer, LocalDate birthDate, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.futureEmployer = futureEmployer;
-        this.birthDate = birthDate;
-        this.role = role;
-    }
-
     public BroBookUser(String firstName, String lastName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        setUsername();
         this.password = password;
-        this.role = role;
-    }
-
-    public BroBookUser(String firstName, String lastName, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.role = role;
     }
 
     @Override
     public String getUsername() {
         return username;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void deriveUsername() {
+        if (firstName != null && lastName != null) {
+            this.username = toTitleCase(firstName) + toTitleCase(lastName);
+        }
     }
 
     @Override

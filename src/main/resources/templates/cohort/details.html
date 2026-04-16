@@ -23,7 +23,7 @@
                 <div class="list-group list-group-flush">
                     <div th:each="user : ${selectedCohort.participants}"
                          class="list-group-item d-flex align-items-center py-3 border-0 border-bottom">
-                        <img th:src="@{/image/{id}(id=${user.id})}"
+                        <img th:src="@{/image/{id}(id=${user.profilePicture.id})}"
                              class="rounded-circle me-3 shadow-sm"
                              style="width: 60px; height: 60px; object-fit: cover; border: 2px solid var(--bro-orange)">
 
