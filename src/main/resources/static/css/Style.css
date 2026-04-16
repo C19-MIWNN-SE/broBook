@@ -1,6 +1,6 @@
 :root {
-    --bro-purple: #7930A1;
-    --bro-orange: #f39200;
+    --bro-navy: #0f2445;
+    --bro-orange: #c9a84c;
     --bro-light: #f8f9fa;
 }
 
@@ -10,16 +10,13 @@ body {
 }
 
 .navbar {
-    background-color: var(--bro-purple) !important;
+    background-color: var(--bro-navy) !important;
     border-bottom: 4px solid var(--bro-orange);
 }
 .btn-primary {
     background-color: var(--bro-orange) !important;
     border: none;
     font-weight: bold;
-}
-.btn-primary:hover {
-    background-color: #d68100 !important;
 }
 .card {
     border: none;
@@ -30,12 +27,21 @@ body {
 .card:hover {
     transform: translateY(-5px);
 }
+
+.user-detail-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
 .cohort-header {
-    background: linear-gradient(135deg, var(--bro-purple) 0%, #BB81D9 100%);
+    background-color: var(--bro-navy);
     color: white;
     padding: 40px 0;
-    border-radius: 0 0 20px 20px;
+    border-radius: 0 0 15px 15px;
     margin-bottom: 30px;
+    border-bottom: 3px solid var(--bro-orange);
 }
 
 .serif {
