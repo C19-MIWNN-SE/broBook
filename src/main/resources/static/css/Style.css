@@ -67,3 +67,30 @@ body {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
 }
+
+.body-cover {
+    display: flex;
+    height: 100vh;
+    background-color: var(--bro-navy);
+    color: white;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+}
+
+.cover-container {
+    max-width: 42em;
+}
+
+.nav-masthead .nav-link {
+    color: rgba(255, 255, 255, .5);
+    border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+    border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .active {
+    color: #fff;
+    border-bottom-color: var(--bro-orange);
+}

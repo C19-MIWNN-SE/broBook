@@ -1,25 +1,46 @@
 <!DOCTYPE html>
-<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<html lang="nl" xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head th:replace="~{fragments/general :: header(paginaTitel='Welkom bij broBook')}"></head>
+<body class="d-flex h-100 text-center body-cover">
 
-<head>
-    <div th:replace="~{/fragments/general :: header}"></div>
-    <title>broBook homepage</title>
-</head>
-<body>
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
-<nav th:replace="~{/fragments/general :: navbar}"></nav>
+    <header class="mb-auto">
+        <div>
+            <h3 class="float-md-start mb-0 serif fw-bold">
+                <span style="color: var(--bro-orange)">bro</span>Book
+            </h3>
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+                <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Home</a>
+                <a class="nav-link fw-bold py-1 px-0 ms-3" target="_blank"
+                   href="https://it-omscholing.nl/">Make IT Work</a>
+            </nav>
+        </div>
+    </header>
 
-<div class="container">
-    <p>Welkom, als je niet kan inloggen, neem dan contact op met je docent</p>
+    <main class="px-3">
+        <h1 class="display-2 serif fw-bold mb-4">Smoelenboek Make IT Work</h1>
+        <p class="lead mb-5 fs-4">Welkom bij het smoelenboek voor Make IT Work - Noord Nederland</p>
 
-    <a th:href="@{/user/all}">Ga naar het overzicht van de gebruikers</a>
-    <br>
-    <a th:href="@{/cohort/all}">Ga naar het overzicht van de cohorten</a>
-    <br>
-    <a target="_blank" href="https://it-omscholing.nl/">Ga naar de make it work pagina</a>
+        <p class="lead">
+            <a href="/user/all" class="btn btn-lg btn-primary fw-bold px-5 py-3 shadow">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Inloggen
+            </a>
+        </p>
+
+        <div class="mt-5 p-3 rounded" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+            <p class="small mb-0 text-white-50">
+                <i class="bi bi-info-circle me-1"></i>
+                Kun je niet inloggen? Neem contact op met je docent voor toegang tot broBook.
+            </p>
+        </div>
+    </main>
+
+    <footer class="mt-auto text-white-50 small">
+        <p>Een project van <span class="text-white">Binary Bro's</span> &copy; 2026</p>
+    </footer>
 </div>
 
-<div th:replace="~{/fragments/general :: footer}"></div>
-
+<div th:replace="~{fragments/general :: scripts}"></div>
 </body>
 </html>
