@@ -1,5 +1,6 @@
 package nl.miwnn.ch19.binarybros.brobook.controller;
 
+import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Paul Rademaker
  * Handles all requests regarding cohorts
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CohortController {
 
+    private static final int VISIBLE_USER_BUBBLES = 4;
     private final CohortService cohortService;
 
     public CohortController(CohortService cohortService) {
@@ -38,7 +44,24 @@ public class CohortController {
 
     @GetMapping("/cohort/all")
     public String showCohortOverview(Model model) {
-        model.addAttribute("allCohorts", cohortService.findAll());
+        List<Cohort> allCohorts = cohortService.findAll();
+
+        Map<Long, List<BroBookUser>> visibleUsersMap = new HashMap<>();
+        Map<Long, Integer> overflowMap = new HashMap<>();
+
+        for (Cohort cohort : allCohorts) {
+            List<BroBookUser> visibleUsers = cohort
+                    .getParticipants().stream()
+                    .limit(VISIBLE_USER_BUBBLES).toList();
+            int overflow = cohort.getParticipants().size() - VISIBLE_USER_BUBBLES;
+
+            visibleUsersMap.put(cohort.getId(), visibleUsers);
+            overflowMap.put(cohort.getId(), overflow);
+        }
+
+        model.addAttribute("allCohorts", allCohorts);
+        model.addAttribute("visibleUsersMap", visibleUsersMap);
+        model.addAttribute("overflowMap", overflowMap);
         return "cohort/overview";
     }
 
