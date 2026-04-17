@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general :: header(paginaTitel='Inloggen - broBook')}"></head>
+<head th:replace="~{fragments/general :: header(~{:: title})}">
+    <Title>Inloggen - broBook</Title>
+</head>
 <body class="bg-light d-flex align-items-center py-4" style="height: 100vh;">
 
 <div class="container">

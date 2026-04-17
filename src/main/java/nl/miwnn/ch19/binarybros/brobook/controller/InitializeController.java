@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -115,19 +116,19 @@ public class InitializeController {
     }
 
     private void cohortSeed() {
-        cohortRepository.save(new Cohort("Cohort 1", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 2", "Functioneel Beheer"));
-        cohortRepository.save(new Cohort("Cohort 3", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 4", "Functioneel Beheer"));
-        cohortRepository.save(new Cohort("Cohort 5", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 6", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 7", "Functioneel Beheer"));
-        cohortRepository.save(new Cohort("Cohort 8", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 9", "Functioneel Beheer"));
-        cohortRepository.save(new Cohort("Cohort 10", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 11", "Functioneel Beheer"));
-        cohortRepository.save(new Cohort("Cohort 12", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 13", "Software Engineering"));
+        cohortRepository.save(new Cohort("Cohort 1", "Software Engineering", LocalDate.of(2018, 9, 1)));
+        cohortRepository.save(new Cohort("Cohort 2", "Functioneel Beheer", LocalDate.of(2019, 3, 1)));
+        cohortRepository.save(new Cohort("Cohort 3", "Software Engineering", LocalDate.of(2019, 9, 1)));
+        cohortRepository.save(new Cohort("Cohort 4", "Functioneel Beheer", LocalDate.of(2020, 3, 1)));
+        cohortRepository.save(new Cohort("Cohort 5", "Software Engineering", LocalDate.of(2020, 9, 1)));
+        cohortRepository.save(new Cohort("Cohort 6", "Software Engineering", LocalDate.of(2021, 3, 1)));
+        cohortRepository.save(new Cohort("Cohort 7", "Functioneel Beheer", LocalDate.of(2021, 9, 1)));
+        cohortRepository.save(new Cohort("Cohort 8", "Software Engineering", LocalDate.of(2022, 3, 1)));
+        cohortRepository.save(new Cohort("Cohort 9", "Functioneel Beheer", LocalDate.of(2022, 9, 1)));
+        cohortRepository.save(new Cohort("Cohort 10", "Software Engineering", LocalDate.of(2023, 3, 1)));
+        cohortRepository.save(new Cohort("Cohort 11", "Functioneel Beheer", LocalDate.of(2023, 9, 1)));
+        cohortRepository.save(new Cohort("Cohort 12", "Software Engineering", LocalDate.of(2024, 3, 1)));
+        cohortRepository.save(new Cohort("Cohort 13", "Software Engineering", LocalDate.of(2024, 9, 1)));
     }
 
     private <T> List<T> readCsv(String resourcePath, Class<T> type) {
