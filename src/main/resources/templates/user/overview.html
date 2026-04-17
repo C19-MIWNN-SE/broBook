@@ -1,39 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general :: header(paginaTitel='Gebruikersoverzicht')}"></head>
+<body class="bg-light">
 
-<head>
-    <title>Gebruikersoverzicht</title>
-</head>
-<body>
+<div th:replace="~{fragments/general :: navbar}"></div>
 
-<div class="container">
-    <h1>
-        Gebruikersoverzicht
-    </h1>
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col">
+            <h2 class="serif fw-bold" style="color: var(--bro-navy)">Gebruikersoverzicht</h2>
+            <p class="text-muted">Hieronder staan alle studenten en docenten die zijn aangemeld.</p>
+        </div>
+    </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Voornaam</th>
-            <th>Achternaam</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="bg-white shadow-sm rounded p-3">
+        <table class="table align-middle">
+            <thead class="border-bottom">
+            <tr>
+                <th style="color: var(--bro-navy)">Foto</th>
+                <th style="color: var(--bro-navy)">Naam</th>
+                <th style="color: var(--bro-navy)">Rol</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${allUsers}">
+                <td style="width: 60px;">
+                    <img th:if="${user.profilePicture != null}"
+                         th:src="@{/image/{id}(id=${user.id})}"
+                         class="rounded-circle"
+                         style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #ddd;">
 
-        <tr th:each="user : ${allUsers}">
-            <td th:text="${user.firstName}">Voornaam</td>
-            <td th:text="${user.lastName}">Achternaam</td>
-            <td><a th:href="@{/info/detail/{id}(id=${user.id})}">Informatie</a></td>
-        </tr>
-        </tbody>
-    </table>
+                    <div th:if="${user.profilePicture == null}"
+                         class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                         style="width: 40px; height: 40px; font-size: 0.8rem;">
+                        <span th:text="${#strings.substring(user.firstName,0,1)}"></span>
+                    </div>
+                </td>
 
-    <br>
-    <a th:href="@{/info/add}">Gebruikersinformatie toevoegen</a>
-    <br>
-    <a th:href="@{/}">Terug naar start</a>
+                <td>
+                    <strong th:text="${user.fullName}">Naam</strong>
+                </td>
+
+                <td>
+                    <span th:text="${user.role}">Rol</span>
+                </td>
+
+                <td class="text-end">
+                    <a th:href="@{/info/detail/{id}(id=${user.id})}"
+                       class="btn btn-sm btn-primary">
+                        Bekijk profiel
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${allUsers.isEmpty()}" class="text-center p-4">
+            <p class="text-muted">Er zijn nog geen gebruikers toegevoegd.</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/info/add}" class="btn btn-primary">Nieuwe gebruiker toevoegen</a>
+        <a th:href="@{/}" class="btn btn-outline-secondary ms-2">Terug naar start</a>
+    </div>
 </div>
+
+<div th:replace="~{fragments/general :: footer}"></div>
+<div th:replace="~{fragments/general :: scripts}"></div>
 
 </body>
 </html>
