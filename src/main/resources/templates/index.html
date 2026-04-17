@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org" class="h-100">
-<head th:replace="~{fragments/general :: header(paginaTitel='Welkom bij broBook')}"></head>
+<head th:replace="~{fragments/general :: header(~{::title})}">
+    <title>Welkom bij broBook</title>
+</head>
 <body class="d-flex h-100 text-center body-cover">
 
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">

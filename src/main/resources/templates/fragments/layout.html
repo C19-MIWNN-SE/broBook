@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout(title, content)">
+<head th:replace="~{fragments/general :: header(${title})}">
+</head>
+<body>
+<nav th:replace="~{fragments/general :: navbar}"></nav>
+<div class="container mt-4">
+    <th:block th:replace="${content}"/>
+</div>
+<footer th:replace="~{fragments/general :: footer}"></footer>
+<div th:replace="~{fragments/general :: scripts}"></div>
+</body>
+</html>

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="nl" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general :: header(paginaTitel='Gebruiker Toevoegen')}"></head>
-<body class="bg-light">
-<div th:replace="~{fragments/general :: navbar}"></div>
-
-<div class="container mt-5 mb-5">
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+<head>
+    <title>Gebruiker toevoegen</title>
+</head>
+<body>
+<div id="content">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card shadow p-4 border-0">
@@ -87,8 +89,5 @@
         </div>
     </div>
 </div>
-
-<div th:replace="~{fragments/general :: footer}"></div>
-<div th:replace="~{fragments/general :: scripts}"></div>
 </body>
 </html>

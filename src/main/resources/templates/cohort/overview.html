@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="nl" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general :: header}">
-    <meta charset="UTF-8">
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+<head>
     <title>Cohort Overzicht</title>
 </head>
-<body class="bg-light">
-<div th:replace="~{fragments/general :: navbar}"></div>
-
-<div class="container mt-4">
+<body>
+<div id="content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fw-bold" style="color: var(--bro-navy)">Ontdek Cohorten</h1>
 
-    <a th:href="@{/cohort/add}" class="btn btn-primary shadow-sm">
-        <i class="bi bi-plus-lg me-2"></i>Nieuw Cohort Toevoegen
-    </a>
+        <a th:href="@{/cohort/add}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i>Nieuw Cohort Toevoegen
+        </a>
     </div>
 
     <div class="row g-4">
@@ -46,8 +45,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </div>
-
-<div th:replace="~{fragments/general :: footer}"></div>
 </body>
 </html>

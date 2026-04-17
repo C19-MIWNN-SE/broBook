@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="nl" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general :: header(paginaTitel='Gebruikersoverzicht')}"></head>
-<body class="bg-light">
-
-<div th:replace="~{fragments/general :: navbar}"></div>
-
-<div class="container mt-4">
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+<head>
+    <title>Gebruikersoverzicht</title>
+</head>
+<body>
+<div id="content">
     <div class="row mb-3">
         <div class="col">
             <h2 class="serif fw-bold" style="color: var(--bro-navy)">Gebruikersoverzicht</h2>
@@ -27,7 +28,7 @@
             <tr th:each="user : ${allUsers}">
                 <td style="width: 60px;">
                     <img th:if="${user.profilePicture != null}"
-                         th:src="@{/image/{id}(id=${user.id})}"
+                         th:src="@{/image/{id}(id=${user.profilePicture.id})}"
                          class="rounded-circle"
                          style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #ddd;">
 
@@ -66,9 +67,5 @@
         <a th:href="@{/}" class="btn btn-outline-secondary ms-2">Terug naar start</a>
     </div>
 </div>
-
-<div th:replace="~{fragments/general :: footer}"></div>
-<div th:replace="~{fragments/general :: scripts}"></div>
-
 </body>
 </html>

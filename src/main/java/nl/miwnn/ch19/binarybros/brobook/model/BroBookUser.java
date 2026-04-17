@@ -21,8 +21,11 @@ public class BroBookUser implements UserDetails {
     private Long id;
 
     private String username;
+
     private String password;
+
     private String role;
+
     @Column(nullable = false)
     private String firstName;
 
@@ -70,11 +73,6 @@ public class BroBookUser implements UserDetails {
         }
     }
 
-    @Override
-    public @Nullable String getPassword() {
-        return password;
-    }
-
     private void setUsername() {
         this.username = toTitleCase(firstName) + toTitleCase(lastName);
     }
@@ -114,6 +112,15 @@ public class BroBookUser implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public @Nullable String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFullName() {

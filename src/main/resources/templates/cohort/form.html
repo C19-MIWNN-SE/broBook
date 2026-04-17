@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="nl" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="~{fragments/general :: header}">
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+<head>
     <title>Cohort overview</title>
 </head>
 <body>
-<div th:replace="~{fragments/general :: navbar}"></div>
-
-<div class="container mt-5">
+<div id="content">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card p-4">
                 <h2 class="fw-bold mb-4" style="color: var(--bro-navy)">Nieuw Cohort</h2>
                 <form th:action="@{/cohort/save}" th:object="${newCohort}" method="post">
-
                     <div class="mb-3">
                         <label class="form-label fw-bold">Cohort naam</label>
                         <input type="text" class="form-control form-control-lg" th:field="*{name}"

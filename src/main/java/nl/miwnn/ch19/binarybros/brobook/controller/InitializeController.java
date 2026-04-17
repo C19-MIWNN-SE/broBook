@@ -13,6 +13,7 @@ import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
@@ -35,6 +36,9 @@ public class InitializeController {
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;
     private final Random random = new Random();
+
+    @Value("${brobook.seed.default.password:default}")
+    private String defaultPassword;
 
 
     private static final Logger log = LoggerFactory.getLogger(InitializeController.class);
@@ -78,6 +82,7 @@ public class InitializeController {
             String testImageUrl = "https://i.pravatar.cc/300?img=" + ((i % 70) + 1);
             Image savedImage = imageService.saveImageFromUrl(testImageUrl);
             student.setProfilePicture(savedImage);
+            student.setPassword(passwordEncoder.encode(defaultPassword));
             broBookUserRepository.save(student);
         }
 
@@ -102,6 +107,7 @@ public class InitializeController {
             String testImageUrl = "https://i.pravatar.cc/300?img=" + ((i % 70) + 1);
             Image savedImage = imageService.saveImageFromUrl(testImageUrl);
             teacher.setProfilePicture(savedImage);
+            teacher.setPassword(passwordEncoder.encode(defaultPassword));
             broBookUserRepository.save(teacher);
         }
 
@@ -114,8 +120,14 @@ public class InitializeController {
         cohortRepository.save(new Cohort("Cohort 3", "Software Engineering"));
         cohortRepository.save(new Cohort("Cohort 4", "Functioneel Beheer"));
         cohortRepository.save(new Cohort("Cohort 5", "Software Engineering"));
-        cohortRepository.save(new Cohort("Cohort 6", "Functioneel Beheer"));
-
+        cohortRepository.save(new Cohort("Cohort 6", "Software Engineering"));
+        cohortRepository.save(new Cohort("Cohort 7", "Functioneel Beheer"));
+        cohortRepository.save(new Cohort("Cohort 8", "Software Engineering"));
+        cohortRepository.save(new Cohort("Cohort 9", "Functioneel Beheer"));
+        cohortRepository.save(new Cohort("Cohort 10", "Software Engineering"));
+        cohortRepository.save(new Cohort("Cohort 11", "Functioneel Beheer"));
+        cohortRepository.save(new Cohort("Cohort 12", "Software Engineering"));
+        cohortRepository.save(new Cohort("Cohort 13", "Software Engineering"));
     }
 
     private <T> List<T> readCsv(String resourcePath, Class<T> type) {
