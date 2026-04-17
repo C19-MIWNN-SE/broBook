@@ -22,9 +22,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class BroBookSecurityConfig {
 
     private final BroBookUserService broBookUserService;
+    private final BroBookAuthenticationSuccessHandler successHandler;
 
-    public BroBookSecurityConfig(BroBookUserService broBookUserService) {
+    public BroBookSecurityConfig(BroBookUserService broBookUserService, BroBookAuthenticationSuccessHandler successHandler) {
         this.broBookUserService = broBookUserService;
+        this.successHandler = successHandler;
     }
 
     @Bean
@@ -35,12 +37,14 @@ public class BroBookSecurityConfig {
                         .requestMatchers(
                                 "/",
                                 "/css/**",
+                                "/login",
                                 "/image/**",
                                 "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).formLogin(form -> form
-                        .defaultSuccessUrl("/cohort/all", true)
+                        .loginPage("/login")
+                        .successHandler(successHandler)
                         .permitAll()
                 ).logout(logout -> logout
                         .logoutSuccessUrl("/")
