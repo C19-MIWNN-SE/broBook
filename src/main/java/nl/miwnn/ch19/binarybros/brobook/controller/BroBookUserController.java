@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Controller
@@ -56,6 +58,10 @@ public class BroBookUserController {
         BroBookUser broBookUser = broBookUserService.getUserById(id);
 
         model.addAttribute("shownUser", broBookUser);
+        model.addAttribute("userAge",
+                broBookUser.getBirthDate() != null ?
+                        Period.between(broBookUser.getBirthDate(), LocalDate.now()).getYears()
+                        : null);
         return "user/details";
     }
 }
