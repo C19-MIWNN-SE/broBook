@@ -32,12 +32,13 @@ import java.io.IOException;
                                             Authentication authentication) throws IOException, ServletException {
 
             String username = authentication.getName();
-
             BroBookUser user = userRepository.findByUsername(username).orElse(null);
 
-            if (user != null) {
+            if (user != null &&  user.getRole().equals("Student")) {
                 response.sendRedirect("/info/detail/" + user.getId());
-            } else {
+            }else if (user != null && user.getRole().equals("Teacher")){
+                response.sendRedirect("/cohort/all");
+            }else if (user != null && user.getRole().equals("ADMIN")){
                 response.sendRedirect("/user/all");
             }
         }
