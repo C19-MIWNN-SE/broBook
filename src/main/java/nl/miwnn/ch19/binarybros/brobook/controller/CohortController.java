@@ -25,7 +25,7 @@ import java.util.Optional;
 @Controller
 public class CohortController {
 
-    private static final int VISIBLE_USER_BUBBLES = 4;
+    private static final int VISIBLE_USER_BUBBLES = 3   ;
     private final CohortService cohortService;
     private final BroBookUserRepository broBookUserRepository;
 
