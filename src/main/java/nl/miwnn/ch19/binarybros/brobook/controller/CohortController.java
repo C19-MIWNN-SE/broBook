@@ -2,6 +2,7 @@ package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Paul Rademaker
@@ -24,9 +27,11 @@ public class CohortController {
 
     private static final int VISIBLE_USER_BUBBLES = 4;
     private final CohortService cohortService;
+    private final BroBookUserRepository broBookUserRepository;
 
-    public CohortController(CohortService cohortService) {
+    public CohortController(CohortService cohortService, BroBookUserRepository broBookUserRepository) {
         this.cohortService = cohortService;
+        this.broBookUserRepository = broBookUserRepository;
     }
 
     @GetMapping("/cohort/add")
@@ -43,7 +48,7 @@ public class CohortController {
     }
 
     @GetMapping("/cohort/all")
-    public String showCohortOverview(Model model) {
+    public String showCohortOverview(Model model, Principal principal) {
         List<Cohort> allCohorts = cohortService.findAll();
 
         Map<Long, List<BroBookUser>> visibleUsersMap = new HashMap<>();

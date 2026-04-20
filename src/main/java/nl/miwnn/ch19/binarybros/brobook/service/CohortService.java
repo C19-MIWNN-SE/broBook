@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Service
-public class CohortService {
+public class  CohortService {
 
     private final CohortRepository cohortRepository;
 
@@ -25,9 +25,9 @@ public class CohortService {
         return cohortRepository.findAll();
     }
 
-    public List<Cohort> findAllByUsername(String username){
-        return cohortRepository.findByUsername(username);
-    }
+//    public List<Cohort> findAllByUsername(String username){
+//        return cohortRepository.findAllByUsername(username);
+//    }
 
     public Cohort getCohortById(Long id) {
         return cohortRepository.findById(id).orElseThrow();
