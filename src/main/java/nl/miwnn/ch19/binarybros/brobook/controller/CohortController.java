@@ -49,24 +49,46 @@ public class CohortController {
 
     @GetMapping("/cohort/all")
     public String showCohortOverview(Model model, Principal principal) {
-        List<Cohort> allCohorts = cohortService.findAll();
+        String username = principal.getName();
+        Optional<BroBookUser> currentUser = broBookUserRepository.findByUsername(username);
+
+        List<Cohort> displayCohorts;
+        String overviewTitle;
+
+        if (currentUser.isPresent()) {
+            BroBookUser user = currentUser.get();
+
+            if ("STUDENT".equalsIgnoreCase(user.getRole()) || "TEACHER".equalsIgnoreCase(user.getRole())) {
+                displayCohorts = user.getCohorts();
+                overviewTitle = "Mijn Cohorten";
+            } else {
+                displayCohorts = cohortService.findAll();
+                overviewTitle = "Alle Cohorten";
+            }
+        } else {
+            displayCohorts = cohortService.findAll();
+            overviewTitle = "Alle Cohorten";
+        }
 
         Map<Long, List<BroBookUser>> visibleUsersMap = new HashMap<>();
         Map<Long, Integer> overflowMap = new HashMap<>();
 
-        for (Cohort cohort : allCohorts) {
-            List<BroBookUser> visibleUsers = cohort
-                    .getParticipants().stream()
-                    .limit(VISIBLE_USER_BUBBLES).toList();
-            int overflow = cohort.getParticipants().size() - VISIBLE_USER_BUBBLES;
+        for (Cohort cohort : displayCohorts) {
+            List<BroBookUser> visibleUsers = cohort.getParticipants().stream()
+                    .limit(VISIBLE_USER_BUBBLES)
+                    .toList();
+
+            int overflow = Math.max(0, cohort.getParticipants().size() - VISIBLE_USER_BUBBLES);
 
             visibleUsersMap.put(cohort.getId(), visibleUsers);
             overflowMap.put(cohort.getId(), overflow);
         }
 
-        model.addAttribute("allCohorts", allCohorts);
+        model.addAttribute("allCohorts", displayCohorts);
+        model.addAttribute("overviewTitle", overviewTitle);
         model.addAttribute("visibleUsersMap", visibleUsersMap);
         model.addAttribute("overflowMap", overflowMap);
+
         return "cohort/overview";
     }
 

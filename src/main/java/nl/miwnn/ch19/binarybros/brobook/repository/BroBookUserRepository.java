@@ -10,6 +10,5 @@ import java.util.Optional;
  */
 
 public interface BroBookUserRepository extends JpaRepository<BroBookUser, Long> {
-
     Optional<BroBookUser> findByUsername(String username);
 }

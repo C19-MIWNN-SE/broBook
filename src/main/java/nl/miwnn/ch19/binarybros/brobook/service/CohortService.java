@@ -1,6 +1,5 @@
 package nl.miwnn.ch19.binarybros.brobook.service;
 
-import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import java.util.List;
 
 /**
  * @author Paul Rademaker
- * ---- VERVANG MIJ ----
  */
 
 @Service
@@ -24,10 +22,6 @@ public class  CohortService {
     public List<Cohort> findAll() {
         return cohortRepository.findAll();
     }
-
-//    public List<Cohort> findAllByUsername(String username){
-//        return cohortRepository.findAllByUsername(username);
-//    }
 
     public Cohort getCohortById(Long id) {
         return cohortRepository.findById(id).orElseThrow();
