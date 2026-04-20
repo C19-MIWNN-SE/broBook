@@ -2,6 +2,7 @@ package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Paul Rademaker
@@ -22,11 +25,13 @@ import java.util.Map;
 @Controller
 public class CohortController {
 
-    private static final int VISIBLE_USER_BUBBLES = 4;
+    private static final int VISIBLE_USER_BUBBLES = 3   ;
     private final CohortService cohortService;
+    private final BroBookUserRepository broBookUserRepository;
 
-    public CohortController(CohortService cohortService) {
+    public CohortController(CohortService cohortService, BroBookUserRepository broBookUserRepository) {
         this.cohortService = cohortService;
+        this.broBookUserRepository = broBookUserRepository;
     }
 
     @GetMapping("/cohort/add")
@@ -43,25 +48,47 @@ public class CohortController {
     }
 
     @GetMapping("/cohort/all")
-    public String showCohortOverview(Model model) {
-        List<Cohort> allCohorts = cohortService.findAll();
+    public String showCohortOverview(Model model, Principal principal) {
+        String username = principal.getName();
+        Optional<BroBookUser> currentUser = broBookUserRepository.findByUsername(username);
+
+        List<Cohort> displayCohorts;
+        String overviewTitle;
+
+        if (currentUser.isPresent()) {
+            BroBookUser user = currentUser.get();
+
+            if ("STUDENT".equalsIgnoreCase(user.getRole()) || "TEACHER".equalsIgnoreCase(user.getRole())) {
+                displayCohorts = user.getCohorts();
+                overviewTitle = "Mijn Cohorten";
+            } else {
+                displayCohorts = cohortService.findAll();
+                overviewTitle = "Alle Cohorten";
+            }
+        } else {
+            displayCohorts = cohortService.findAll();
+            overviewTitle = "Alle Cohorten";
+        }
 
         Map<Long, List<BroBookUser>> visibleUsersMap = new HashMap<>();
         Map<Long, Integer> overflowMap = new HashMap<>();
 
-        for (Cohort cohort : allCohorts) {
-            List<BroBookUser> visibleUsers = cohort
-                    .getParticipants().stream()
-                    .limit(VISIBLE_USER_BUBBLES).toList();
-            int overflow = cohort.getParticipants().size() - VISIBLE_USER_BUBBLES;
+        for (Cohort cohort : displayCohorts) {
+            List<BroBookUser> visibleUsers = cohort.getParticipants().stream()
+                    .limit(VISIBLE_USER_BUBBLES)
+                    .toList();
+
+            int overflow = Math.max(0, cohort.getParticipants().size() - VISIBLE_USER_BUBBLES);
 
             visibleUsersMap.put(cohort.getId(), visibleUsers);
             overflowMap.put(cohort.getId(), overflow);
         }
 
-        model.addAttribute("allCohorts", allCohorts);
+        model.addAttribute("allCohorts", displayCohorts);
+        model.addAttribute("overviewTitle", overviewTitle);
         model.addAttribute("visibleUsersMap", visibleUsersMap);
         model.addAttribute("overflowMap", overflowMap);
+
         return "cohort/overview";
     }
 
@@ -70,7 +97,6 @@ public class CohortController {
         Cohort cohort = cohortService.getCohortById(id);
 
         model.addAttribute("selectedCohort", cohort);
-
         return "cohort/details";
     }
 }

@@ -14,7 +14,7 @@
     <link rel="stylesheet" th:href="@{/css/Style.css}">
 </head>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm mb-0">
     <div class="container">
         <a class="navbar-brand fw-bold fs-3" href="/">
             <span style="color: var(--bro-orange)">bro</span>Book
@@ -24,8 +24,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav ms-auto">
-                <a class="nav-link px-3" href="/user/all">Gebruikers</a>
-                <a class="nav-link px-3" href="/cohort/all">Cohorten</a>
+                <a class="nav-link px-3" sec:authorize="hasRole('ADMIN')" href="/user/all">Gebruikers</a>
+                <a class="nav-link px-3" sec:authorize="hasAnyRole('Teacher','ADMIN')"
+                   href="/cohort/all">Alle cohorten</a>
+                <a class="nav-link px-3" sec:authorize="hasRole('Student')" href="/cohort/all">Mijn cohort(en)</a>
             </div>
         </div>
         <div sec:authorize="isAuthenticated()" class="d-flex align-items-center ms-lg-3">
