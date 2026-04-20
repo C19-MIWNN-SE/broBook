@@ -25,6 +25,10 @@ public class CohortService {
         return cohortRepository.findAll();
     }
 
+    public List<Cohort> findAllByUsername(String username){
+        return cohortRepository.findByUsername(username);
+    }
+
     public Cohort getCohortById(Long id) {
         return cohortRepository.findById(id).orElseThrow();
     }

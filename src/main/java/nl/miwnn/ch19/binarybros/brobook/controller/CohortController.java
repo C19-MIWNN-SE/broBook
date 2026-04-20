@@ -70,7 +70,6 @@ public class CohortController {
         Cohort cohort = cohortService.getCohortById(id);
 
         model.addAttribute("selectedCohort", cohort);
-
         return "cohort/details";
     }
 }
