@@ -68,7 +68,7 @@ public class InitializeController {
 
     private void userSeed() {
         BroBookUser beheerder = new BroBookUser(
-                "De", "Beheerder",
+                "beheerder","De", "Beheerder",
                 passwordEncoder.encode("beheerder"), "ADMIN");
         broBookUserRepository.save(beheerder);
     }
@@ -82,6 +82,7 @@ public class InitializeController {
             student.getCohorts().add(allCohorts.get(i % allCohorts.size()));
             String testImageUrl = "https://i.pravatar.cc/300?img=" + ((i % 70) + 1);
             Image savedImage = imageService.saveImageFromUrl(testImageUrl);
+            student.setUsername(student.getFirstName() + student.getLastName());
             student.setProfilePicture(savedImage);
             student.setPassword(passwordEncoder.encode(defaultPassword));
             broBookUserRepository.save(student);

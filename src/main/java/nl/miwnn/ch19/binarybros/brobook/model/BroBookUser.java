@@ -2,6 +2,8 @@ package nl.miwnn.ch19.binarybros.brobook.model;
 
 import com.opencsv.bean.CsvDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,15 +22,19 @@ public class BroBookUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Een gebruikersnaam is verplicht voor elke gebruiker")
     private String username;
 
     private String password;
 
+    @NotNull(message = "Vul de rol voor deze gebruiker in.")
     private String role;
 
+    @NotBlank(message = "Een voornaam is verplicht voor elke gebruiker.")
     @Column(nullable = false)
     private String firstName;
 
+    @NotBlank(message = "Een achternaam is verplicht voor elke gebruiker.")
     private String lastName;
 
     @CsvDate("yyyy-MM-dd")
@@ -53,7 +59,8 @@ public class BroBookUser implements UserDetails {
 
     public BroBookUser() {}
 
-    public BroBookUser(String firstName, String lastName, String password, String role) {
+    public BroBookUser(String username, String firstName, String lastName, String password, String role) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -65,16 +72,8 @@ public class BroBookUser implements UserDetails {
         return username;
     }
 
-    @PrePersist
-    @PreUpdate
-    private void deriveUsername() {
-        if (firstName != null && lastName != null) {
-            this.username = toTitleCase(firstName) + toTitleCase(lastName);
-        }
-    }
-
-    private void setUsername() {
-        this.username = toTitleCase(firstName) + toTitleCase(lastName);
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -100,10 +99,6 @@ public class BroBookUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
-    }
-
-    private String toTitleCase(String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
     public Long getId() {

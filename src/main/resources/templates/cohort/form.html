@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
 <head>
-    <title>Cohort overview</title>
+    <title>Cohort toevoegen</title>
 </head>
 <body>
 <div id="content">
@@ -18,15 +18,16 @@
                                placeholder="Bijv. Cohort 19">
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Startdatum</label>
-                        <input type="date" class="form-control" th:field="*{startDate}">
+                    <div th:replace="~{fragments/form :: formField(
+                        'name', 'Naam cohort', 'Bijv. Cohort 19', 'text')}">
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Omscholingsrichting</label>
-                        <input type="text" class="form-control" th:field="*{subject}"
-                               placeholder="Richting van de omscholing">
+                    <div th:replace="~{fragments/form :: formField(
+                        'startDate', 'Startdatum', '', 'date')}">
+                    </div>
+
+                    <div th:replace="~{fragments/form :: formField(
+                        'subject', 'Omscholingsrichting', 'Richting van de omscholing', 'text')}">
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
