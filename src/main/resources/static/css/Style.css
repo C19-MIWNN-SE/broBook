@@ -33,12 +33,7 @@ body {
 }
 
 .cohort-header {
-    background-color: var(--bro-navy);
-    color: white;
-    padding: 40px 0;
-    border-radius: 0 0 15px 15px;
-    margin-bottom: 30px;
-    border-bottom: 3px solid var(--bro-orange);
+    color: black;
     margin-top: 0
 }
 
