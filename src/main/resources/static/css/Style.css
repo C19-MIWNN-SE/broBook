@@ -33,12 +33,7 @@ body {
 }
 
 .cohort-header {
-    background-color: var(--bro-navy);
-    color: white;
-    padding: 40px 0;
-    border-radius: 0 0 15px 15px;
-    margin-bottom: 30px;
-    border-bottom: 3px solid var(--bro-orange);
+    color: black;
     margin-top: 0
 }
 
@@ -73,6 +68,25 @@ body {
 .info-tile {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
+}
+
+.cohort-detail-info-tile {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.cohort-detail-info-tile:hover{
+    transform:scale(1.1);
+}
+
+.collapse-icon {
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+    transform: rotate(0deg);
+}
+
+[aria-expanded="false"] .collapse-icon {
+    transform: rotate(180deg);
 }
 
 .body-cover {
