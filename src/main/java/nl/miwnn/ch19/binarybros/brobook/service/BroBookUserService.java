@@ -5,10 +5,12 @@
 
 package nl.miwnn.ch19.binarybros.brobook.service;
 
+import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Image;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.ImageRepository;
+import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,11 +25,13 @@ public class BroBookUserService implements UserDetailsService {
 
     private final BroBookUserRepository userRepository;
     private final ImageService imageService;
+    private final BroBookUserMapper broBookUserMapper;
 
     public BroBookUserService(BroBookUserRepository userRepository,
-                              ImageService imageService) {
+                              ImageService imageService, BroBookUserMapper broBookUserMapper) {
         this.userRepository = userRepository;
         this.imageService = imageService;
+        this.broBookUserMapper = broBookUserMapper;
     }
 
     @Override
@@ -50,5 +54,10 @@ public class BroBookUserService implements UserDetailsService {
             user.setProfilePicture(imageService.saveImage(imageFile));
         }
         userRepository.save(user);
+    }
+
+    public void saveNewUser(NewUserFormDTO dto) {
+        BroBookUser newUser = broBookUserMapper.toBroBookUser(dto);
+        userRepository.save(newUser);
     }
 }

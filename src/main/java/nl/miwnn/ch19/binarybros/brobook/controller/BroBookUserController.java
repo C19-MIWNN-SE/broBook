@@ -1,6 +1,7 @@
 package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import jakarta.validation.Valid;
+import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
@@ -33,6 +34,30 @@ public class BroBookUserController {
     public String showUserOverview(Model model){
         model.addAttribute("allUsers", broBookUserService.findAll());
         return "user/overview";
+    }
+
+    @GetMapping("/user/add")
+    public String showNewUserForm(Model model) {
+        log.debug("Formulier voor toevoegen nieuwe gebruiker opgevraagd");
+        model.addAttribute("newUser", new NewUserFormDTO());
+        model.addAttribute("allCohorts", cohortService.findAll());
+        return "user/add-form";
+    }
+
+    @PostMapping("/user/save")
+    public String saveNewUserForm(@ModelAttribute("newUser") @Valid NewUserFormDTO dto,
+                                  BindingResult bindingResult,
+                                  Model model) {
+        log.info("Nieuwe gebruiker opslaan: {}", dto.getUsername());
+
+        if (bindingResult.hasErrors()) {
+            log.info("Validatiefouten bij opslaan nieuwe gebruiker: {}", bindingResult.getErrorCount());
+            model.addAttribute("allCohorts", cohortService.findAll());
+            return "user/add-form";
+        }
+
+        broBookUserService.saveNewUser(dto);
+        return "redirect:/user/all";
     }
 
     @GetMapping("/info/add")

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+<head>
+    <title>Nieuwe gebruiker toevoegen</title>
+</head>
+<body>
+<div id="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow p-4 border-0">
+                <h2 class="serif fw-bold mb-4" style="color: var(--bro-navy)">Nieuwe gebruiker</h2>
+
+                <form th:action="@{/user/save}"
+                      th:object="${newUser}"
+                      method="post">
+
+                    <div th:replace="~{fragments/form :: formField(
+                            'username', 'Gebruikersnaam', 'Gebruikersnaam...', 'text')}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'firstName', 'Voornaam', 'Voornaam...', 'text')}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'lastName', 'Achternaam', 'Achternaam...', 'text')}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="radio" class="btn-check" th:field="*{role}"
+                           value="Student" id="studentRadio" checked>
+                    <label class="btn" for="studentRadio">Student</label>
+
+                    <input type="radio" class="btn-check" th:field="*{role}"
+                           value="Teacher" id="teacherRadio">
+                    <label class="btn" for="teacherRadio">Docent</label>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'birthDate', 'Geboortedatum', '', 'date')}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'futureEmployer', 'Toekomstige werkgever', 'Bijv. IBM of Univé', 'text')}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted text-uppercase d-block">
+                            Selecteer Cohort(en)</label>
+                        <div class="p-3 border rounded bg-light" style="max-height: 150px; overflow-y: auto;">
+                            <div th:each="cohort : ${allCohorts}" class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       th:classappend="${#fields.hasErrors('cohorts')} ? 'is-invalid'"
+                                       th:field="*{cohorts}"
+                                       th:value="${cohort.id}"
+                                       th:id="'cohort-' + ${cohort.id}">
+                                <label class="form-check-label"
+                                       th:for="'cohort-' + ${cohort.id}" th:text="${cohort.name}"></label>
+                            </div>
+                            <div th:if="${allCohorts.isEmpty()}" class="text-muted small italic">
+                                Geen cohorten beschikbaar om te selecteren.
+                            </div>
+                            <span th:if="${#fields.hasErrors('cohorts')}"
+                                  th:errors="*{cohorts}"
+                                  class="invalid-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Gebruiker Opslaan</button>
+                        <div class="d-flex gap-2">
+                            <button type="reset" class="btn btn-light text-muted w-50 border">
+                                Formulier leegmaken</button>
+                            <a th:href="@{/user/all}" class="btn btn-light text-muted w-50 border">Annuleren</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

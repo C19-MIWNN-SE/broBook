@@ -24,7 +24,8 @@ public class BroBookSecurityConfig {
     private final BroBookUserService broBookUserService;
     private final BroBookAuthenticationSuccessHandler successHandler;
 
-    public BroBookSecurityConfig(BroBookUserService broBookUserService, BroBookAuthenticationSuccessHandler successHandler) {
+    public BroBookSecurityConfig(BroBookUserService broBookUserService,
+                                 BroBookAuthenticationSuccessHandler successHandler) {
         this.broBookUserService = broBookUserService;
         this.successHandler = successHandler;
     }
@@ -52,11 +53,6 @@ public class BroBookSecurityConfig {
                 ).userDetailsService(broBookUserService);
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
