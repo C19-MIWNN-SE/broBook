@@ -18,21 +18,20 @@
                       enctype="multipart/form-data">
 
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold small text-muted text-uppercase">Voornaam</label>
-                            <input type="text" class="form-control bg-light" th:field="*{firstName}"
-                                   placeholder="Voornaam...">
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'firstName', 'Voornaam', 'Voornaam...', 'text')}">
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold small text-muted text-uppercase">Achternaam</label>
-                            <input type="text" class="form-control bg-light" th:field="*{lastName}"
-                                   placeholder="Achternaam...">
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'lastName', 'Achternaam', 'Achternaam...', 'text')}">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small text-muted text-uppercase">Geboortedatum</label>
-                        <input type="date" class="form-control bg-light" th:field="*{birthDate}">
+                    <div th:replace="~{fragments/form :: formField(
+                                'birthDate', 'Geboortedatum', '', 'date')}">
                     </div>
 
                     <div class="mb-3">
@@ -42,6 +41,7 @@
                             <div th:each="cohort : ${allCohorts}" class="form-check">
                                 <input type="checkbox"
                                        class="form-check-input"
+                                       th:classappend="${#fields.hasErrors('cohorts')} ? 'is-invalid'"
                                        th:field="*{cohorts}"
                                        th:value="${cohort.id}"
                                        th:id="'cohort-' + ${cohort.id}">
@@ -51,20 +51,25 @@
                             <div th:if="${allCohorts.isEmpty()}" class="text-muted small italic">
                                 Geen cohorten beschikbaar om te selecteren.
                             </div>
+                            <span th:if="${#fields.hasErrors('cohorts')}"
+                                  th:errors="*{cohorts}"
+                                  class="invalid-feedback"></span>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small text-muted text-uppercase">Toekomstige werkgever</label>
-                        <input type="text" class="form-control bg-light" th:field="*{futureEmployer}"
-                               placeholder="Bijv. IBM of Univé">
+                    <div th:replace="~{fragments/form :: formField(
+                                'futureEmployer', 'Toekomstige werkgever', 'Bijv. IBM of Univé', 'text')}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted text-uppercase">
                             Vertel iets over jezelf</label>
                         <textarea class="form-control bg-light" th:field="*{bio}"
+                                  th:classappend="${#fields.hasErrors('bio')} ? 'is-invalid'"
                                   rows="4" placeholder="Schrijf hier een korte bio..."></textarea>
+                        <span th:if="${#fields.hasErrors('bio')}"
+                              th:errors="*{bio}"
+                              class="invalid-feedback"></span>
                     </div>
 
                     <div class="mb-4">

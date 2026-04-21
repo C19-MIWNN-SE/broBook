@@ -1,6 +1,8 @@
 package nl.miwnn.ch19.binarybros.brobook.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,8 +19,14 @@ public class Cohort {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Vul een naam voor dit cohort in")
     private String name;
+
+    @NotNull(message = "Vul een startdatum in voor dit cohort")
     private LocalDate startDate;
+
+    @NotBlank(message = "Vul een richting in voor dit cohort")
     private String subject;
 
     @ManyToMany
