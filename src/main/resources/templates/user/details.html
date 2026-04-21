@@ -40,22 +40,22 @@
 
                 <div class="row g-3 mb-4">
                     <div class="col-6">
-                        <div class="info-tile rounded-3 p-3">
-                            <div class="text-uppercase text-secondary fw-medium mb-1">Geboortedatum</div>
-                            <div th:text="${shownUser.birthDate}" class="fw-medium text-dark">1 januari 2000</div>
+                        <div class="info-tile rounded-3 p-3 h-100">
+                            <div class="text-uppercase text-secondary fw-medium mb-1 small">Geboortedatum & Leeftijd</div>
+                            <div class="fw-medium text-dark">
+                                <span th:text="${shownUser.birthDate}">1 januari 2000</span>
+                                <span th:if="${userAge != null}"
+                                      th:text="|(${userAge} jaar)|"
+                                      class="text-secondary ms-1 small">(26 jaar)</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="info-tile rounded-3 p-3">
-                            <div class="text-uppercase text-secondary fw-medium mb-1">Leeftijd</div>
-                            <div class="fw-medium text-dark">
-                                <span th:if="${userAge != null}"
-                                      th:text="|${userAge} jaar|">
-                                    26 jaar
-                                </span>
-                                <span th:unless="${userAge != null}">
-                                    Onbekend
-                                </span>
+                        <div class="info-tile rounded-3 p-3 h-100">
+                            <div class="text-uppercase text-secondary fw-medium mb-1 small">Woonplaats</div>
+                            <div th:text="${shownUser.residence != null ? shownUser.residence : 'Onbekend'}"
+                                 class="fw-medium text-dark">
+                                Woonplaats
                             </div>
                         </div>
                     </div>

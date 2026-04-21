@@ -31,6 +31,8 @@ public class BroBookUser implements UserDetails {
 
     private String lastName;
 
+    private String residence;
+
     @CsvDate("yyyy-MM-dd")
     private LocalDate birthDate;
 
@@ -141,6 +143,18 @@ public class BroBookUser implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getResidence() {
+        return residence;
+    }
+
+    public void setResidence(String residence) {
+        this.residence = residence;
     }
 
     public LocalDate getBirthDate() {

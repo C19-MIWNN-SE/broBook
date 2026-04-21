@@ -39,6 +39,7 @@ body {
     border-radius: 0 0 15px 15px;
     margin-bottom: 30px;
     border-bottom: 3px solid var(--bro-orange);
+    margin-top: 0
 }
 
 .serif {
@@ -100,3 +101,4 @@ body {
     color: #fff;
     border-bottom-color: var(--bro-orange);
 }
+

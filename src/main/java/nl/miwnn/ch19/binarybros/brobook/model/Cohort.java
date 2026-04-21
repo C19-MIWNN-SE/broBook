@@ -17,10 +17,10 @@ public class Cohort {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private LocalDate startDate;
     private String subject;
+
     @ManyToMany
     private List<BroBookUser> participants = new ArrayList<>();
 
