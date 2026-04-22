@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -30,8 +31,11 @@ public class BroBookUserController {
     }
 
     @GetMapping("/user/all")
-    public String showUserOverview(Model model){
-        model.addAttribute("allUsers", broBookUserService.findAll());
+    public String showUserOverview(Model model, Principal principal) {
+        BroBookUser currentUser = broBookUserService.getUserByUsername(principal.getName());
+
+        model.addAttribute("allUsers", broBookUserService.findVisibleUsers(currentUser));
+
         return "user/overview";
     }
 
@@ -85,14 +89,20 @@ public class BroBookUserController {
     }
 
     @GetMapping("/info/detail/{id}")
-    public String getDetailPage(@PathVariable Long id,
-                                Model model) {
-        BroBookUser broBookUser = broBookUserService.getUserById(id);
+    public String getDetailPage(@PathVariable Long id, Model model, Principal principal) {
+        BroBookUser currentUser = broBookUserService.getUserByUsername(principal.getName());
+        BroBookUser targetUser = broBookUserService.getUserById(id);
 
-        model.addAttribute("shownUser", broBookUser);
+        List<BroBookUser> allowedUsers = broBookUserService.findVisibleUsers(currentUser);
+
+        if (targetUser == null || !allowedUsers.contains(targetUser)) {
+            return "redirect:/user/all?unauthorized";
+        }
+
+        model.addAttribute("shownUser", targetUser);
         model.addAttribute("userAge",
-                broBookUser.getBirthDate() != null ?
-                        Period.between(broBookUser.getBirthDate(), LocalDate.now()).getYears()
+                targetUser.getBirthDate() != null ?
+                        Period.between(targetUser.getBirthDate(), LocalDate.now()).getYears()
                         : null);
         return "user/details";
     }
