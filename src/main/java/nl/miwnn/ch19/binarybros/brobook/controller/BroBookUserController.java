@@ -73,11 +73,9 @@ public class BroBookUserController {
         BroBookUser currentUser = broBookUserService.getUserByUsername(principal.getName());
         BroBookUser targetUser = broBookUserService.getUserById(id);
 
-        // Haal de lijst op van mensen die deze student MAG zien
         List<BroBookUser> allowedUsers = broBookUserService.findVisibleUsers(currentUser);
 
         if (targetUser == null || !allowedUsers.contains(targetUser)) {
-            // Geen toegang? Terugsturen naar overzicht
             return "redirect:/user/all?unauthorized";
         }
 

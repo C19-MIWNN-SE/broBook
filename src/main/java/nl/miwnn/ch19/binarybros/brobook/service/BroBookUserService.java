@@ -18,10 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * @author Binary Bro's
- * Service laag voor het beheren van gebruikerslogica en autorisatie.
- */
 @Service
 public class BroBookUserService implements UserDetailsService {
 
@@ -57,36 +53,26 @@ public class BroBookUserService implements UserDetailsService {
 
         Set<BroBookUser> visibleUsers = new HashSet<>();
 
-        // Regel: Studenten zien altijd alle docenten
         visibleUsers.addAll(userRepository.findByRole("Teacher"));
 
-        // Regel: Studenten zien zichzelf
         visibleUsers.add(currentUser);
 
-        // Regel: Studenten zien iedereen uit hun eigen cohorten (ManyToMany relatie)
         if (currentUser.getCohorts() != null) {
             for (Cohort cohort : currentUser.getCohorts()) {
                 visibleUsers.addAll(cohort.getParticipants());
             }
         }
 
-        // Resultaat omzetten naar lijst en sorteren op achternaam
         List<BroBookUser> result = new ArrayList<>(visibleUsers);
         result.sort(Comparator.comparing(BroBookUser::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
 
         return result;
     }
-
-    /**
-     * Verwerkt de opslag van een gebruiker inclusief de profielfoto.
-     * Complexe logica gescheiden van de controller (Score 3 bewijs).
-     */
     public void save(BroBookUser user, MultipartFile imageFile) {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
                 Image profilePicture = user.getProfilePicture();
 
-                // Als de user nog geen Image object had, maak er een aan
                 if (profilePicture == null) {
                     profilePicture = new Image();
                 }
@@ -96,7 +82,6 @@ public class BroBookUserService implements UserDetailsService {
 
                 user.setProfilePicture(profilePicture);
             } catch (IOException e) {
-                // Log de fout of handel deze af (voor portfolio: foutafhandeling)
                 System.err.println("Fout bij verwerken afbeelding: " + e.getMessage());
             }
         }
