@@ -13,19 +13,20 @@
                 <h2 class="serif fw-bold mb-4" style="color: var(--bro-navy)">Persoonlijke informatie</h2>
 
                 <form th:action="@{/info/save}"
-                      th:object="${newUser}"
+                      th:object="${dtoToEdit}"
                       method="post"
                       enctype="multipart/form-data">
+                    <input th:field="${dtoToEdit.id}" type="hidden">
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div th:replace="~{fragments/form :: formField(
-                                'firstName', 'Voornaam', 'Voornaam...', 'text')}">
+                            <div th:replace="~{fragments/form :: formFieldDisabled(
+                                'firstName', 'Voornaam', 'text')}">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div th:replace="~{fragments/form :: formField(
-                                'lastName', 'Achternaam', 'Achternaam...', 'text')}">
+                            <div th:replace="~{fragments/form :: formFieldDisabled(
+                                'lastName', 'Achternaam', 'text')}">
                             </div>
                         </div>
                     </div>
@@ -34,31 +35,17 @@
                                 'birthDate', 'Geboortedatum', '', 'date')}">
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small text-muted text-uppercase d-block">
-                            Selecteer Cohort(en)</label>
-                        <div class="p-3 border rounded bg-light" style="max-height: 150px; overflow-y: auto;">
-                            <div th:each="cohort : ${allCohorts}" class="form-check">
-                                <input type="checkbox"
-                                       class="form-check-input"
-                                       th:classappend="${#fields.hasErrors('cohorts')} ? 'is-invalid'"
-                                       th:field="*{cohorts}"
-                                       th:value="${cohort.id}"
-                                       th:id="'cohort-' + ${cohort.id}">
-                                <label class="form-check-label"
-                                       th:for="'cohort-' + ${cohort.id}" th:text="${cohort.name}"></label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
+                                'residence', 'Woonplaats', 'Woonplaats...', 'text')}">
                             </div>
-                            <div th:if="${allCohorts.isEmpty()}" class="text-muted small italic">
-                                Geen cohorten beschikbaar om te selecteren.
-                            </div>
-                            <span th:if="${#fields.hasErrors('cohorts')}"
-                                  th:errors="*{cohorts}"
-                                  class="invalid-feedback"></span>
                         </div>
-                    </div>
-
-                    <div th:replace="~{fragments/form :: formField(
+                        <div class="col-md-6">
+                            <div th:replace="~{fragments/form :: formField(
                                 'futureEmployer', 'Toekomstige werkgever', 'Bijv. IBM of Univé', 'text')}">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">

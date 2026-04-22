@@ -2,8 +2,8 @@ package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import jakarta.validation.Valid;
 import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
+import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
-import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
 
 @Controller
 public class BroBookUserController {
@@ -39,13 +38,13 @@ public class BroBookUserController {
     @GetMapping("/user/add")
     public String showNewUserForm(Model model) {
         log.debug("Formulier voor toevoegen nieuwe gebruiker opgevraagd");
-        model.addAttribute("newUser", new NewUserFormDTO());
+        model.addAttribute("newUserDto", new NewUserFormDTO());
         model.addAttribute("allCohorts", cohortService.findAll());
         return "user/add-form";
     }
 
     @PostMapping("/user/save")
-    public String saveNewUserForm(@ModelAttribute("newUser") @Valid NewUserFormDTO dto,
+    public String saveNewUserForm(@ModelAttribute("newUserDto") @Valid NewUserFormDTO dto,
                                   BindingResult bindingResult,
                                   Model model) {
         log.info("Nieuwe gebruiker opslaan: {}", dto.getUsername());
@@ -60,31 +59,27 @@ public class BroBookUserController {
         return "redirect:/user/all";
     }
 
-    @GetMapping("/info/add")
-    public String showNewInfoForm(Model model) {
-        log.debug("Formulier voor toevoegen gebruikersinformatie opgevraagd");
-        model.addAttribute("newUser", new BroBookUser());
+    @GetMapping("/info/edit/{id}")
+    public String showNewInfoForm(@PathVariable Long id,
+                                  Model model) {
+        log.debug("Formulier voor toevoegen gebruikersinformatie opgevraagd voor gebruiker met id: {}", id);
 
-        List<Cohort> cohorts = cohortService.findAll();
-
-        model.addAttribute("allCohorts", cohorts);
-
+        UserInfoFormDTO dto = broBookUserService.getUserInfoFormDTO(id);
+        model.addAttribute("dtoToEdit", dto);
         return "user/info-form";
     }
 
     @PostMapping("/info/save")
-    public String saveInfoForm(@ModelAttribute("newUser") @Valid BroBookUser newUser,
+    public String saveInfoForm(@ModelAttribute("dtoToEdit") @Valid UserInfoFormDTO dto,
                                BindingResult bindingResult,
                                @RequestParam("imageFile") MultipartFile imageFile,
                                Model model) {
-        log.info("Gebruiker opslaan: {}", newUser.getUsername());
-        newUser.setRole("user");
+        log.info("Gebruiker opslaan: {}", dto.getId());
         if (bindingResult.hasErrors()) {
             log.warn("Validatiefouten bij opslaan gebruikersinformatie: {}", bindingResult.getErrorCount());
-            model.addAttribute("allCohorts", cohortService.findAll());
             return "user/info-form";
         }
-        broBookUserService.save(newUser, imageFile);
+        broBookUserService.saveUserInformation(dto, imageFile);
 
         return "redirect:/user/all";
     }

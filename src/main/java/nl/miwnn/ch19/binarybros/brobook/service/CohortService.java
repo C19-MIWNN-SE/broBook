@@ -23,6 +23,10 @@ public class  CohortService {
         return cohortRepository.findAll();
     }
 
+    public List<Cohort> findAllById(List<Long> ids) {
+        return cohortRepository.findAllById(ids);
+    }
+
     public Cohort getCohortById(Long id) {
         return cohortRepository.findById(id).orElseThrow();
     }

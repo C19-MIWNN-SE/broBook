@@ -25,6 +25,10 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
+    public Image getImage(Long id) {
+        return imageRepository.getReferenceById(id);
+    }
+
     public Image saveImage(MultipartFile imageFile) {
         Image image = new Image();
         try {

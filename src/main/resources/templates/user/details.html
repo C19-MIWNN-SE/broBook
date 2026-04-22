@@ -28,7 +28,7 @@
                 <div class="text-center">
                     <div th:text="${shownUser.getFullName()}" class="serif text-white fs-5 fw-semibold">Naam</div>
                     <div class="text-white-50 small text-uppercase" th:text="${shownUser.role}">Rol</div>
-                    <a th:href="@{/info/add}" class="btn btn-primary">Informatie toevoegen</a>
+                    <a th:href="@{/info/edit/{id}(id=${shownUser.id})}" class="btn btn-primary">Informatie toevoegen</a>
                 </div>
             </div>
             <div class="col-12 col-md-8 p-4 d-flex flex-column">

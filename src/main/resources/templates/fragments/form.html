@@ -7,7 +7,7 @@
      th:with="submitted=${#fields.hasErrors('*')}"
      class="mb-3">
     <label class="form-label fw-bold small text-muted text-uppercase"
-           th:text="${labelName}">
+           th:text="${labelName}" th:for="${fieldName}">
         Label naam
     </label>
     <input th:type="${type}"
@@ -20,6 +20,21 @@
     <span th:if="${#fields.hasErrors(fieldName)}"
           th:errors="*{__${fieldName}__}"
           class="invalid-feedback"></span>
+</div>
+
+<!--A disabled input field for a form-->
+<div th:fragment="formFieldDisabled(fieldName, labelName, type)"
+     class="mb-3">
+    <label class="form-label fw-bold small text-muted text-uppercase"
+           th:text="${labelName}" th:for="${fieldName}">
+        Label naam
+    </label>
+    <input th:type="${type}"
+           th:value="*{__${fieldName}__}"
+           class="form-control bg-light"
+           th:id="${fieldName}"
+           disabled>
+    <input th:field="*{__${fieldName}__}" type="hidden">
 </div>
 
 </body>
