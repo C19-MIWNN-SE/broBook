@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
+import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
@@ -64,6 +65,12 @@ public class BroBookUserController {
         return "redirect:/user/all";
     }
 
+    @PostMapping("/user/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        broBookUserService.deleteById(id);
+        return "redirect:/user/all";
+    }
+
     @GetMapping("/info/edit/{id}")
     public String showNewInfoForm(@PathVariable Long id,
                                   Model model) {
@@ -107,4 +114,6 @@ public class BroBookUserController {
                         : null);
         return "user/details";
     }
+
+
 }

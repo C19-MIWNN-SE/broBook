@@ -104,4 +104,8 @@ public class BroBookUserService implements UserDetailsService {
         newUser.setCohorts(cohorts);
         userRepository.save(newUser);
     }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
 }

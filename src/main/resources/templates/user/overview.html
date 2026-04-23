@@ -59,10 +59,22 @@
                     </a>
                 </td>
 
-                <td class="text-end">
-                    <button type="button" class="btn btn-sm btn-primary">Verwijder</button>
-                    <button type="button" class="btn btn-sm btn-primary">Bewerk</button>
+                <td>
+                    <a th:href="@{/info/edit/{id}(id=${user.id})}"
+                       class="btn btn-sm btn-primary">
+                        Bewerk gebruiker
+                    </a>
                 </td>
+
+                <td>
+                    <a th:href="@{/delete/{id}(id=${user.id})}"
+                       class="btn btn-sm btn-primary">
+                        Verwijder
+                    </a>
+                </td>
+
+
+
             </tr>
             </tbody>
         </table>
