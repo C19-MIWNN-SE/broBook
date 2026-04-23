@@ -68,6 +68,7 @@ public class BroBookUserService implements UserDetailsService {
 
         return result;
     }
+
     public void save(BroBookUser user, MultipartFile imageFile) {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
@@ -87,5 +88,9 @@ public class BroBookUserService implements UserDetailsService {
         }
 
         userRepository.save(user);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }
