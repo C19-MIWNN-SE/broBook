@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -79,6 +80,10 @@ public class BroBookUserService implements UserDetailsService {
 
         return result;
     }
+    public void save(BroBookUser user, MultipartFile imageFile) {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                Image profilePicture = user.getProfilePicture();
 
     public UserInfoFormDTO getUserInfoFormDTO(Long id) {
         BroBookUser user = getUserById(id);
@@ -103,5 +108,9 @@ public class BroBookUserService implements UserDetailsService {
         List<Cohort> cohorts = cohortService.findAllById(dto.getCohortIds());
         newUser.setCohorts(cohorts);
         userRepository.save(newUser);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }
