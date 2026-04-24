@@ -28,6 +28,9 @@ public class BroBookUser implements UserDetails {
 
     private String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserActivation userActivation;
+
     @NotNull(message = "Vul de rol voor deze gebruiker in.")
     private String role;
 
@@ -115,6 +118,14 @@ public class BroBookUser implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserActivation getUserActivation() {
+        return userActivation;
+    }
+
+    public void setUserActivation(UserActivation userActivation) {
+        this.userActivation = userActivation;
     }
 
     public String getFullName() {

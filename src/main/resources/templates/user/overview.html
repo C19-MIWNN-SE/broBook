@@ -95,13 +95,10 @@
                 </td>
 
                 <td>
-                    <a th:href="@{/delete/{id}(id=${user.id})}"
-                       class="btn btn-sm btn-primary">
-                        Verwijder
-                    </a>
+                    <form th:action="@{/user/delete/{id}(id=${user.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-primary">Verwijderen</button>
+                    </form>
                 </td>
-
-
 
             </tr>
             </tbody>
