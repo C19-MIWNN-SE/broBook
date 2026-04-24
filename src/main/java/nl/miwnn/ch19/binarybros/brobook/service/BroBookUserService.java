@@ -16,6 +16,7 @@ import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,17 +30,19 @@ public class BroBookUserService implements UserDetailsService {
     private final BroBookUserMapper broBookUserMapper;
     private final CohortService cohortService;
     private final UserActivationService userActivationService;
+    private final PasswordEncoder passwordEncoder;
 
     public BroBookUserService(BroBookUserRepository userRepository,
                               ImageService imageService,
                               BroBookUserMapper broBookUserMapper,
                               CohortService cohortService,
-                              UserActivationService userActivationService) {
+                              UserActivationService userActivationService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.broBookUserMapper = broBookUserMapper;
         this.cohortService = cohortService;
         this.userActivationService = userActivationService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
