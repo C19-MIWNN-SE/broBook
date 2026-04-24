@@ -1,0 +1,48 @@
+@media print {
+    .container {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .mt-4 {
+        margin-top: 0 !important;
+    }
+
+    .row-cols-md-2 > .col {
+        width: 50%; !important;
+    }
+
+    .print-col {
+        position: relative;
+        outline: 2px dashed #aaa;
+        padding: 1.5rem !important;
+        break-inside: avoid;
+    }
+
+    .print-col::before {
+        content: "✂";
+        position: absolute;
+        top: -0.6rem;
+        left: -0.6rem;
+        font-size: 1rem;
+        color: #aaa;
+        background: white;
+        line-height: 1;
+        padding: 0 2px;
+    }
+
+    .print-card {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    .token {
+        letter-spacing: 0.15rem;
+        background-color: #f8f8f8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+

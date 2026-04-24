@@ -19,16 +19,9 @@ import java.util.List;
 @Component
 public class BroBookUserMapper {
 
-    private final PasswordEncoder passwordEncoder;
-
-    public BroBookUserMapper(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
     public BroBookUser toBroBookUser(NewUserFormDTO dto) {
         BroBookUser user = new BroBookUser();
         user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode("welkom"));
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setRole(dto.getRole());

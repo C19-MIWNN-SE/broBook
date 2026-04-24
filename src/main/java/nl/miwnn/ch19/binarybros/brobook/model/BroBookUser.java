@@ -23,6 +23,7 @@ public class BroBookUser implements UserDetails {
     private Long id;
 
     @NotBlank(message = "Een gebruikersnaam is verplicht voor elke gebruiker")
+    @Column(unique = true)
     private String username;
 
     private String password;

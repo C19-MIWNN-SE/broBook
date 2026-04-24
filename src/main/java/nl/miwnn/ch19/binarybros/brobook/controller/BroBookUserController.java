@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
+import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -52,8 +54,14 @@ public class BroBookUserController {
     @PostMapping("/user/save")
     public String saveNewUserForm(@ModelAttribute("newUserDto") @Valid NewUserFormDTO dto,
                                   BindingResult bindingResult,
-                                  Model model) {
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
         log.info("Nieuwe gebruiker opslaan: {}", dto.getUsername());
+
+        if (broBookUserService.usernameExists(dto.getUsername())) {
+            bindingResult.rejectValue(
+                    "username", "alreadyExists", "Gebruikersnaam bestaat al");
+        }
 
         if (bindingResult.hasErrors()) {
             log.info("Validatiefouten bij opslaan nieuwe gebruiker: {}", bindingResult.getErrorCount());
@@ -61,7 +69,8 @@ public class BroBookUserController {
             return "user/add-form";
         }
 
-        broBookUserService.saveNewUser(dto);
+        UserActivation activation = broBookUserService.saveNewUser(dto);
+        redirectAttributes.addFlashAttribute("newActivation", activation);
         return "redirect:/user/all";
     }
 

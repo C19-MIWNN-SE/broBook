@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface BroBookUserRepository extends JpaRepository<BroBookUser, Long> {
     Optional<BroBookUser> findByUsername(String username);
     List<BroBookUser> findByRole(String role);
+
+    boolean existsByUsername(String username);
 }

@@ -40,7 +40,8 @@ public class BroBookSecurityConfig {
                                 "/css/**",
                                 "/login",
                                 "/image/**",
-                                "/webjars/**"
+                                "/webjars/**",
+                                "/activation/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).formLogin(form -> form

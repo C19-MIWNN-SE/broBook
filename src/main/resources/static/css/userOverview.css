@@ -1,0 +1,20 @@
+.token {
+    letter-spacing: 0.3rem;
+    border-style: dashed !important;
+}
+
+@media print{
+    body > *:not(#activationModal) {
+        display: none;
+    }
+
+    #activationModal {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .no-print {
+        display: none;
+    }
+}

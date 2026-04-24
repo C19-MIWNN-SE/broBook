@@ -10,6 +10,7 @@ import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,15 +28,18 @@ public class BroBookUserService implements UserDetailsService {
     private final ImageService imageService;
     private final BroBookUserMapper broBookUserMapper;
     private final CohortService cohortService;
+    private final UserActivationService userActivationService;
 
     public BroBookUserService(BroBookUserRepository userRepository,
                               ImageService imageService,
                               BroBookUserMapper broBookUserMapper,
-                              CohortService cohortService) {
+                              CohortService cohortService,
+                              UserActivationService userActivationService) {
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.broBookUserMapper = broBookUserMapper;
         this.cohortService = cohortService;
+        this.userActivationService = userActivationService;
     }
 
     @Override
@@ -95,14 +99,23 @@ public class BroBookUserService implements UserDetailsService {
 
         user = broBookUserMapper.applyInfoToBroBookUser(dto, user);
 
+        if (imageFile != null && !imageFile.isEmpty()) {
+            user.setProfilePicture(imageService.saveImage(imageFile));
+        }
+
         userRepository.save(user);
     }
 
-    public void saveNewUser(NewUserFormDTO dto) {
+    public UserActivation saveNewUser(NewUserFormDTO dto) {
         BroBookUser newUser = broBookUserMapper.toBroBookUser(dto);
         List<Cohort> cohorts = cohortService.findAllById(dto.getCohortIds());
         newUser.setCohorts(cohorts);
         userRepository.save(newUser);
+        return userActivationService.generateActivation(newUser);
+    }
+
+    public boolean usernameExists(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     public void deleteById(Long id) {

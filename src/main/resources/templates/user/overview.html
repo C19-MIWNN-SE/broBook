@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content}, ~{::extraHead})}">
 <head>
     <title>Gebruikersoverzicht</title>
+    <th:block th:fragment="extraHead">
+        <link rel="stylesheet" th:href="@{/css/userOverview.css}">
+    </th:block>
 </head>
 <body>
 <div id="content">
@@ -19,24 +22,40 @@
         <a th:href="@{/}" class="btn btn-outline-secondary ms-2">Terug naar start</a>
     </div>
 
+    <div class="d-flex gap-2 mb-3">
+        <button type="button" class="btn btn-danger btn-sm">
+            Verwijder selectie
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm"
+                th:data-url="@{/activation/print}" onclick="submitSelected(this.getAttribute('data-url'))">
+            Print activatiecodes
+        </button>
+    </div>
+
     <div class="bg-white shadow-sm rounded p-3">
         <table class="table align-middle">
             <thead class="border-bottom">
             <tr>
+                <th>
+                    <input type="checkbox" id="selectAll" class="form-check-input">
+                </th>
                 <th style="color: var(--bro-navy)">Foto</th>
                 <th style="color: var(--bro-navy)">Naam</th>
                 <th style="color: var(--bro-navy)">Rol</th>
+                <th style="color: var(--bro-navy)">Actief</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${allUsers}">
+                <td>
+                    <input type="checkbox" th:value="${user.id}" class="form-check-input user-checkbox">
+                </td>
                 <td style="width: 60px;">
                     <img th:if="${user.profilePicture != null}"
                          th:src="@{/image/{id}(id=${user.profilePicture.id})}"
                          class="rounded-circle"
                          style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #ddd;">
-
                     <div th:if="${user.profilePicture == null}"
                          class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
                          style="width: 40px; height: 40px; font-size: 0.8rem;">
@@ -50,6 +69,15 @@
 
                 <td>
                     <span th:text="${user.role}">Rol</span>
+                </td>
+
+                <td>
+                    <span th:if="${user.password != null}">
+                        <i class="bi bi-check-square-fill text-success fs-5"></i>
+                    </span>
+                    <span th:unless="${user.password != null}">
+                        <i class="bi bi-x-square-fill text-danger fs-5"></i>
+                    </span>
                 </td>
 
                 <td class="text-end">
@@ -83,6 +111,88 @@
             <p class="text-muted">Er zijn nog geen gebruikers toegevoegd.</p>
         </div>
     </div>
+
+<!--    Modal    -->
+
+    <div th:if="${newActivation}"
+         id="activationModal"
+          class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-2">
+                <div class="modal-header border-0 justify-content-center">
+                    <h2 class="h5 fw-bold">Account aangemaakt</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Geef onderstaande code aan
+                        <strong th:text="${newActivation.user.username}">naam</strong>
+                    </p>
+
+                    <div class="token fs-1 fw-bold border border-2 border-dark rounded p-3 my-3"
+                         th:text="${newActivation.token}">
+                        Token
+                    </div>
+
+                    <p class="text-muted small">Geldig tot:
+                        <span th:text="${newActivation.expireDate}">Verloopdatum</span>
+                    </p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center no-print">
+                    <button onclick="window.print()" class="btn btn-primary">Afdrukken</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    Script to show activation token modal when new user is created -->
+    <script th:if="${newActivation}">
+        document.addEventListener('DOMContentLoaded', function() {
+            new bootstrap.Modal(document.getElementById('activationModal')).show();
+        })
+    </script>
+
+<!--    Script to send selected users to backend -->
+    <script>
+        document.getElementById('selectAll').addEventListener('change', function () {
+            document.querySelectorAll('.user-checkbox').forEach(checkbox => checkbox.checked = this.checked);
+        });
+
+        function submitSelected(action) {
+            const ids = [...document.querySelectorAll('.user-checkbox:checked')].map(checkbox => checkbox.value);
+
+            if (ids.length === 0) {
+                alert('Selecteer eerst één of meerdere gebruikers.');
+                return;
+            }
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = action;
+
+            ids.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedUsers';
+                input.value = id;
+                form.appendChild(input);
+            });
+
+            const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+            if (csrfToken && csrfHeader) {
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_csrf';
+                csrf.value = csrfToken;
+                form.appendChild(csrf);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
 </div>
+
 </body>
 </html>
