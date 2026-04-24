@@ -7,18 +7,9 @@ package nl.miwnn.ch19.binarybros.brobook.dto;
 
 public class UserInfoFormDTO extends BaseUserFormDTO {
 
-    private Long id;
     private String bio;
     private String residence;
     private String existingProfilePictureId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getBio() {
         return bio;

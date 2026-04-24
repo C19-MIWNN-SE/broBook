@@ -1,11 +1,10 @@
 package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import jakarta.validation.Valid;
-import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
+import nl.miwnn.ch19.binarybros.brobook.dto.UserAccountFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
-import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
@@ -46,19 +45,27 @@ public class BroBookUserController {
     @GetMapping("/user/add")
     public String showNewUserForm(Model model) {
         log.debug("Formulier voor toevoegen nieuwe gebruiker opgevraagd");
-        model.addAttribute("newUserDto", new NewUserFormDTO());
+        model.addAttribute("userAccountDTO", new UserAccountFormDTO());
         model.addAttribute("allCohorts", cohortService.findAll());
-        return "user/add-form";
+        return "user/account-form";
+    }
+
+    @GetMapping("/user/edit/{id}")
+    public String showEditUserForm(@PathVariable Long id, Model model) {
+        log.debug("Formulier voor bewerken gebruiker opgevraagd met id: {}", id);
+        model.addAttribute("userAccountDTO", broBookUserService.getUserAccountFormDTO(id));
+        model.addAttribute("allCohorts", cohortService.findAll());
+        return "user/account-form";
     }
 
     @PostMapping("/user/save")
-    public String saveNewUserForm(@ModelAttribute("newUserDto") @Valid NewUserFormDTO dto,
+    public String saveNewUserForm(@ModelAttribute("userAccountDTO") @Valid UserAccountFormDTO dto,
                                   BindingResult bindingResult,
                                   Model model,
                                   RedirectAttributes redirectAttributes) {
-        log.info("Nieuwe gebruiker opslaan: {}", dto.getUsername());
+        log.info("Gebruiker opslaan: {}", dto.getUsername());
 
-        if (broBookUserService.usernameExists(dto.getUsername())) {
+        if (broBookUserService.usernameAlreadyInUse(dto.getUsername(), dto.getId())) {
             bindingResult.rejectValue(
                     "username", "alreadyExists", "Gebruikersnaam bestaat al");
         }
@@ -66,10 +73,10 @@ public class BroBookUserController {
         if (bindingResult.hasErrors()) {
             log.info("Validatiefouten bij opslaan nieuwe gebruiker: {}", bindingResult.getErrorCount());
             model.addAttribute("allCohorts", cohortService.findAll());
-            return "user/add-form";
+            return "user/account-form";
         }
 
-        UserActivation activation = broBookUserService.saveNewUser(dto);
+        UserActivation activation = broBookUserService.saveUserAccount(dto);
         redirectAttributes.addFlashAttribute("newActivation", activation);
         return "redirect:/user/all";
     }

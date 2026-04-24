@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public abstract class BaseUserFormDTO {
+    private Long id;
 
     @NotBlank(message = "Een voornaam is verplicht voor elke gebruiker.")
     private String firstName;
@@ -26,6 +27,14 @@ public abstract class BaseUserFormDTO {
     private LocalDate birthDate;
 
     private List<Long> cohortIds;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

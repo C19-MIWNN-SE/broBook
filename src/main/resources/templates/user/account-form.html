@@ -13,8 +13,9 @@
                 <h2 class="serif fw-bold mb-4" style="color: var(--bro-navy)">Nieuwe gebruiker</h2>
 
                 <form th:action="@{/user/save}"
-                      th:object="${newUserDto}"
+                      th:object="${userAccountDTO}"
                       method="post">
+                    <input type="hidden" th:field="*{id}">
 
                     <div th:replace="~{fragments/form :: formField(
                             'username', 'Gebruikersnaam', 'Gebruikersnaam...', 'text')}">

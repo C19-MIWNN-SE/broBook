@@ -6,7 +6,7 @@
 
 package nl.miwnn.ch19.binarybros.brobook.service;
 
-import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
+import nl.miwnn.ch19.binarybros.brobook.dto.UserAccountFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
@@ -87,6 +87,11 @@ public class BroBookUserService implements UserDetailsService {
         return result;
     }
 
+    public UserAccountFormDTO getUserAccountFormDTO(Long id) {
+        BroBookUser user = getUserById(id);
+        return broBookUserMapper.toUserAccountFormDTO(user);
+    }
+
     public UserInfoFormDTO getUserInfoFormDTO(Long id) {
         BroBookUser user = getUserById(id);
         return broBookUserMapper.toUserInfoFormDTO(user);
@@ -109,12 +114,33 @@ public class BroBookUserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public UserActivation saveNewUser(NewUserFormDTO dto) {
-        BroBookUser newUser = broBookUserMapper.toBroBookUser(dto);
+    public UserActivation saveUserAccount(UserAccountFormDTO dto) {
+        BroBookUser user;
+
+        if (dto.getId() != null) {
+            user = getUserById(dto.getId());
+        } else {
+            user = new BroBookUser();
+        }
+
+        user = broBookUserMapper.toBroBookUser(dto, user);
+
         List<Cohort> cohorts = cohortService.findAllById(dto.getCohortIds());
-        newUser.setCohorts(cohorts);
-        userRepository.save(newUser);
-        return userActivationService.generateActivation(newUser);
+        user.setCohorts(cohorts);
+
+        userRepository.save(user);
+        return userActivationService.generateActivation(user);
+    }
+
+    public boolean usernameAlreadyInUse(String name, Long userId) {
+        Optional<BroBookUser> existingUser = userRepository.findByUsername(name);
+        if (existingUser.isEmpty()) {
+            return false;
+        }
+        if (userId == null) {
+            return true;
+        }
+        return !existingUser.get().getId().equals(userId);
     }
 
     public boolean usernameExists(String username) {
