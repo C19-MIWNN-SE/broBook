@@ -2,7 +2,6 @@ package nl.miwnn.ch19.binarybros.brobook.repository;
 
 /*
  * @author Mart Stukje
- * !! Doel van programma
  * */
 
 import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;

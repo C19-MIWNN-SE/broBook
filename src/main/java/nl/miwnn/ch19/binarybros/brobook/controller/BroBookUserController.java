@@ -102,7 +102,7 @@ public class BroBookUserController {
                                BindingResult bindingResult,
                                @RequestParam("imageFile") MultipartFile imageFile,
                                Model model) {
-        log.info("Gebruiker opslaan: {}", dto.getId());
+        log.info("Gebruikersinformatie opslaan: {}", dto.getId());
         if (bindingResult.hasErrors()) {
             log.warn("Validatiefouten bij opslaan gebruikersinformatie: {}", bindingResult.getErrorCount());
             return "user/info-form";

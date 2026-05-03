@@ -26,6 +26,7 @@ public class UserActivationService {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private static final Logger log = LoggerFactory.getLogger(UserActivationService.class);
+    private static final int EXPIRE_ACTIVATION_AFTER_DAYS = 7;
 
     private final UserActivationRepository userActivationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -55,7 +56,7 @@ public class UserActivationService {
         UserActivation activation = new UserActivation();
         activation.setUser(user);
         activation.setToken(token);
-        activation.setExpireDate(LocalDate.now().plusDays(7));
+        activation.setExpireDate(LocalDate.now().plusDays(EXPIRE_ACTIVATION_AFTER_DAYS));
 
         return userActivationRepository.save(activation);
     }
