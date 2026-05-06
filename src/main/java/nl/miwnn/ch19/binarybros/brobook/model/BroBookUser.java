@@ -48,11 +48,14 @@ public class BroBookUser implements UserDetails {
 
     private String residence;
 
+    @CsvBindByName(column = "geboortedatum")
     @CsvDate("yyyy-MM-dd")
     private LocalDate birthDate;
 
+    @CsvBindByName(column = "werkgever")
     private String futureEmployer;
 
+    @CsvBindByName(column = "bio")
     @Column(columnDefinition = "TEXT")
     private String bio;
 
