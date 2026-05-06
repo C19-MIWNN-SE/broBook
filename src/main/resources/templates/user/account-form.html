@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content})}">
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content}, ~{})}">
 <head>
     <title>Nieuwe gebruiker toevoegen</title>
 </head>
@@ -13,8 +13,9 @@
                 <h2 class="serif fw-bold mb-4" style="color: var(--bro-navy)">Nieuwe gebruiker</h2>
 
                 <form th:action="@{/user/save}"
-                      th:object="${newUserDto}"
+                      th:object="${userAccountDTO}"
                       method="post">
+                    <input type="hidden" th:field="*{id}">
 
                     <div th:replace="~{fragments/form :: formField(
                             'username', 'Gebruikersnaam', 'Gebruikersnaam...', 'text')}">

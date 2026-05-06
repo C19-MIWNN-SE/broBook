@@ -1,10 +1,10 @@
 package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import jakarta.validation.Valid;
-import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
+import nl.miwnn.ch19.binarybros.brobook.dto.UserAccountFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
-import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
+import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
@@ -44,24 +44,39 @@ public class BroBookUserController {
     @GetMapping("/user/add")
     public String showNewUserForm(Model model) {
         log.debug("Formulier voor toevoegen nieuwe gebruiker opgevraagd");
-        model.addAttribute("newUserDto", new NewUserFormDTO());
+        model.addAttribute("userAccountDTO", new UserAccountFormDTO());
         model.addAttribute("allCohorts", cohortService.findAll());
-        return "user/add-form";
+        return "user/account-form";
+    }
+
+    @GetMapping("/user/edit/{id}")
+    public String showEditUserForm(@PathVariable Long id, Model model) {
+        log.debug("Formulier voor bewerken gebruiker opgevraagd met id: {}", id);
+        model.addAttribute("userAccountDTO", broBookUserService.getUserAccountFormDTO(id));
+        model.addAttribute("allCohorts", cohortService.findAll());
+        return "user/account-form";
     }
 
     @PostMapping("/user/save")
-    public String saveNewUserForm(@ModelAttribute("newUserDto") @Valid NewUserFormDTO dto,
+    public String saveNewUserForm(@ModelAttribute("userAccountDTO") @Valid UserAccountFormDTO dto,
                                   BindingResult bindingResult,
-                                  Model model) {
-        log.info("Nieuwe gebruiker opslaan: {}", dto.getUsername());
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
+        log.info("Gebruiker opslaan: {}", dto.getUsername());
+
+        if (broBookUserService.usernameAlreadyInUse(dto.getUsername(), dto.getId())) {
+            bindingResult.rejectValue(
+                    "username", "alreadyExists", "Gebruikersnaam bestaat al");
+        }
 
         if (bindingResult.hasErrors()) {
             log.info("Validatiefouten bij opslaan nieuwe gebruiker: {}", bindingResult.getErrorCount());
             model.addAttribute("allCohorts", cohortService.findAll());
-            return "user/add-form";
+            return "user/account-form";
         }
 
-        broBookUserService.saveNewUser(dto);
+        UserActivation activation = broBookUserService.saveUserAccount(dto);
+        redirectAttributes.addFlashAttribute("newActivation", activation);
         return "redirect:/user/all";
     }
 
@@ -99,7 +114,7 @@ public class BroBookUserController {
                                BindingResult bindingResult,
                                @RequestParam("imageFile") MultipartFile imageFile,
                                Model model) {
-        log.info("Gebruiker opslaan: {}", dto.getId());
+        log.info("Gebruikersinformatie opslaan: {}", dto.getId());
         if (bindingResult.hasErrors()) {
             log.warn("Validatiefouten bij opslaan gebruikersinformatie: {}", bindingResult.getErrorCount());
             return "user/info-form";

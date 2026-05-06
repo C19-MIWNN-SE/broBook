@@ -42,6 +42,10 @@
                     Inloggen
                 </button>
             </form>
+
+            <div>
+                <a th:href="@{/activate/user}">Account activeren</a>
+            </div>
         </div>
 
         <div sec:authorize="isAuthenticated()" class="py-4">

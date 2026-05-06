@@ -7,12 +7,8 @@ package nl.miwnn.ch19.binarybros.brobook.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 
-import java.time.LocalDate;
-import java.util.List;
-
-public class NewUserFormDTO extends BaseUserFormDTO {
+public class UserAccountFormDTO extends BaseUserFormDTO {
     @NotBlank(message = "Een gebruikersnaam is verplicht voor elke gebruiker")
     private String username;
 

@@ -40,7 +40,8 @@ public class BroBookSecurityConfig {
                                 "/css/**",
                                 "/login",
                                 "/image/**",
-                                "/webjars/**"
+                                "/webjars/**",
+                                "/activate/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/user/delete/**",

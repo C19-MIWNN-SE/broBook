@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org"
-      th:fragment="layout(title, content)">
-<head th:replace="~{fragments/general :: header(${title})}">
+      th:fragment="layout(title, content, extraHead)">
+<head th:replace="~{fragments/general :: header(${title}, ${extraHead})}">
 </head>
 <body>
 <nav th:replace="~{fragments/general :: navbar}"></nav>

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:fragment="header(title)">
+<head th:fragment="header(title, extraHead)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title th:replace="${title}">broBook</title>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
@@ -12,9 +14,10 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
     <link rel="stylesheet" th:href="@{/css/Style.css}">
+    <th:block th:replace="${extraHead}"/>
 </head>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm mb-0">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm mb-0 d-print-none">
     <div class="container">
         <a class="navbar-brand fw-bold fs-3" href="/">
             <span style="color: var(--bro-orange)">bro</span>Book

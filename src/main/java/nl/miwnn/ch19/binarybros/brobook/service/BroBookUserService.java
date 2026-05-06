@@ -7,16 +7,18 @@
 package nl.miwnn.ch19.binarybros.brobook.service;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
+import nl.miwnn.ch19.binarybros.brobook.dto.UserAccountFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,16 +35,22 @@ public class BroBookUserService implements UserDetailsService {
     private final BroBookUserMapper broBookUserMapper;
     private final CohortService cohortService;
     private final CohortRepository cohortRepository;
+    private final UserActivationService userActivationService;
+    private final PasswordEncoder passwordEncoder;
 
     public BroBookUserService(BroBookUserRepository userRepository,
                               ImageService imageService,
                               BroBookUserMapper broBookUserMapper,
-                              CohortService cohortService, CohortRepository cohortRepository) {
+                              CohortService cohortService, CohortRepository cohortRepository,
+                              UserActivationService userActivationService,
+                              PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.broBookUserMapper = broBookUserMapper;
         this.cohortService = cohortService;
         this.cohortRepository = cohortRepository;
+        this.userActivationService = userActivationService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -87,6 +95,11 @@ public class BroBookUserService implements UserDetailsService {
         return result;
     }
 
+    public UserAccountFormDTO getUserAccountFormDTO(Long id) {
+        BroBookUser user = getUserById(id);
+        return broBookUserMapper.toUserAccountFormDTO(user);
+    }
+
     public UserInfoFormDTO getUserInfoFormDTO(Long id) {
         BroBookUser user = getUserById(id);
         return broBookUserMapper.toUserInfoFormDTO(user);
@@ -102,14 +115,44 @@ public class BroBookUserService implements UserDetailsService {
 
         user = broBookUserMapper.applyInfoToBroBookUser(dto, user);
 
+        if (imageFile != null && !imageFile.isEmpty()) {
+            user.setProfilePicture(imageService.saveImage(imageFile));
+        }
+
         userRepository.save(user);
     }
 
-    public void saveNewUser(NewUserFormDTO dto) {
-        BroBookUser newUser = broBookUserMapper.toBroBookUser(dto);
+    public UserActivation saveUserAccount(UserAccountFormDTO dto) {
+        BroBookUser user;
+
+        if (dto.getId() != null) {
+            user = getUserById(dto.getId());
+        } else {
+            user = new BroBookUser();
+        }
+
+        user = broBookUserMapper.toBroBookUser(dto, user);
+
         List<Cohort> cohorts = cohortService.findAllById(dto.getCohortIds());
-        newUser.setCohorts(cohorts);
-        userRepository.save(newUser);
+        user.setCohorts(cohorts);
+
+        userRepository.save(user);
+        return userActivationService.generateActivation(user);
+    }
+
+    public boolean usernameAlreadyInUse(String name, Long userId) {
+        Optional<BroBookUser> existingUser = userRepository.findByUsername(name);
+        if (existingUser.isEmpty()) {
+            return false;
+        }
+        if (userId == null) {
+            return true;
+        }
+        return !existingUser.get().getId().equals(userId);
+    }
+
+    public boolean usernameExists(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     public void deleteById(Long id) {

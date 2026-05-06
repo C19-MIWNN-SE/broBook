@@ -108,6 +108,7 @@ public class InitializeController {
 
             String testImageUrl = "https://i.pravatar.cc/300?img=" + ((i % 70) + 1);
             Image savedImage = imageService.saveImageFromUrl(testImageUrl);
+            teacher.setUsername(teacher.getFirstName() + teacher.getLastName());
             teacher.setProfilePicture(savedImage);
             teacher.setPassword(passwordEncoder.encode(defaultPassword));
             broBookUserRepository.save(teacher);

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content}, ~{})}">
+<head>
+    <title>Gebruiker activeren</title>
+    <th:block th:fragment="extraHead">
+    </th:block>
+</head>
+<body>
+<div id="content">
+    <form th:action="@{/activate/user}" th:object="${tokenFormDTO}" method="post">
+        <div th:replace="~{fragments/form :: formField(
+            'token', 'Activatiecode', 'Vul hier de code in die je van je docent hebt gekregen...', 'text')}">
+        </div>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">Code invoeren</button>
+            <div class="d-flex gap-2">
+                <button type="reset" class="btn btn-light text-muted w-50 border">
+                    Formulier leegmaken</button>
+                <a th:href="@{/}" class="btn btn-light text-muted w-50 border">Annuleren</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

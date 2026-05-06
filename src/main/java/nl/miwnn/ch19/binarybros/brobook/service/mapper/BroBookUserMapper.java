@@ -5,12 +5,10 @@ package nl.miwnn.ch19.binarybros.brobook.service.mapper;
  * */
 
 import nl.miwnn.ch19.binarybros.brobook.dto.BaseUserFormDTO;
-import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
+import nl.miwnn.ch19.binarybros.brobook.dto.UserAccountFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
-import org.jspecify.annotations.NonNull;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,22 +17,14 @@ import java.util.List;
 @Component
 public class BroBookUserMapper {
 
-    private final PasswordEncoder passwordEncoder;
-
-    public BroBookUserMapper(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public BroBookUser toBroBookUser(NewUserFormDTO dto) {
-        BroBookUser user = new BroBookUser();
-        user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode("welkom"));
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setRole(dto.getRole());
-        user.setBirthDate(dto.getBirthDate());
-        user.setFutureEmployer(dto.getFutureEmployer());
-        return user;
+    public BroBookUser toBroBookUser(UserAccountFormDTO dto, BroBookUser existing) {
+        existing.setUsername(dto.getUsername());
+        existing.setFirstName(dto.getFirstName());
+        existing.setLastName(dto.getLastName());
+        existing.setRole(dto.getRole());
+        existing.setBirthDate(dto.getBirthDate());
+        existing.setFutureEmployer(dto.getFutureEmployer());
+        return existing;
     }
 
     public BroBookUser applyInfoToBroBookUser(UserInfoFormDTO dto, BroBookUser existing) {
@@ -45,8 +35,8 @@ public class BroBookUserMapper {
         return existing;
     }
 
-    public NewUserFormDTO toNewUserFormDTO(BroBookUser user) {
-        NewUserFormDTO dto = new NewUserFormDTO();
+    public UserAccountFormDTO toUserAccountFormDTO(BroBookUser user) {
+        UserAccountFormDTO dto = new UserAccountFormDTO();
         setBaseUserFormInfo(dto, user);
         dto.setUsername(user.getUsername());
         dto.setRole(user.getRole());
@@ -56,13 +46,13 @@ public class BroBookUserMapper {
     public UserInfoFormDTO toUserInfoFormDTO(BroBookUser user) {
         UserInfoFormDTO dto = new UserInfoFormDTO();
         setBaseUserFormInfo(dto, user);
-        dto.setId(user.getId());
         dto.setBio(user.getBio());
         dto.setResidence(user.getResidence());
         return dto;
     }
 
     private void setBaseUserFormInfo(BaseUserFormDTO dto, BroBookUser user) {
+        dto.setId(user.getId());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setFutureEmployer(user.getFutureEmployer());
