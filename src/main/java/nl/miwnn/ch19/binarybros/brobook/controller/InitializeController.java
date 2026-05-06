@@ -131,6 +131,7 @@ public class InitializeController {
         cohortRepository.save(new Cohort("Cohort 11", "Functioneel Beheer", LocalDate.of(2023, 9, 1)));
         cohortRepository.save(new Cohort("Cohort 12", "Software Engineering", LocalDate.of(2024, 3, 1)));
         cohortRepository.save(new Cohort("Cohort 13", "Software Engineering", LocalDate.of(2024, 9, 1)));
+        log.info("Testcohorten aangemaakt");
     }
 
     private <T> List<T> readCsv(String resourcePath, Class<T> type) {

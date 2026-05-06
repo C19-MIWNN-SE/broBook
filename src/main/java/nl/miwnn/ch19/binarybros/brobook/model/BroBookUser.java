@@ -30,10 +30,10 @@ public class BroBookUser implements UserDetails {
 
     private String password;
 
-    @CsvBindByName(column = "rol")
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserActivation userActivation;
 
+    @CsvBindByName(column = "rol")
     @NotNull(message = "Vul de rol voor deze gebruiker in.")
     private String role;
 

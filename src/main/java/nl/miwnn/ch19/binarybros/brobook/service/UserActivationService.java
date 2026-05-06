@@ -24,9 +24,9 @@ public class UserActivationService {
     private static final int TOKEN_LENGTH = 8;
     private static final String USED_CHARACTERS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
     private static final SecureRandom RANDOM = new SecureRandom();
+    private static final int EXPIRE_ACTIVATION_AFTER_DAYS = 7;
 
     private static final Logger log = LoggerFactory.getLogger(UserActivationService.class);
-    private static final int EXPIRE_ACTIVATION_AFTER_DAYS = 7;
 
     private final UserActivationRepository userActivationRepository;
     private final PasswordEncoder passwordEncoder;
