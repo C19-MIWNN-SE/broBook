@@ -40,13 +40,29 @@
                     </h4>
 
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <img th:each="student : ${visibleUsersMap[cohort.id]}"
-                             th:src="@{/image/{id}(id=${student.profilePicture.id})}"
-                             th:alt="${student.getFullName()}"
-                             class="rounded-circle profile-picture-small"/>
+                        <th:block th:each="student : ${visibleUsersMap[cohort.id]}">
+
+                            <img th:if="${student.profilePicture != null}"
+                                 th:src="@{/image/{id}(id=${student.profilePicture.id})}"
+                                 th:alt="${student.getFullName()}"
+                                 class="rounded-circle profile-picture-small shadow-sm"/>
+
+                            <div th:if="${student.profilePicture == null}"
+                                 class="rounded-circle profile-picture-small profile-initials
+                                 d-flex align-items-center justify-content-center shadow-sm">
+                                 <span th:text="${#strings.toUpperCase(#strings.substring(student.firstName, 0, 1)
+                                                + #strings.substring(student.lastName, 0, 1))}"
+                                       class="fw-bold"
+                                       style="font-size: 0.8rem;">
+                                     MS
+                                 </span>
+                            </div>
+
+                        </th:block>
+
                         <div th:if="${overflowMap[cohort.id] > 0}"
-                             class="rounded-circle bg-light border d-flex
-                                    align-items-center justify-content-center profile-picture-small">
+                             class="rounded-circle bg-light border d-flex align-items-center
+                             justify-content-center profile-picture-small overflow-bubble">
                             <span th:text="|+${overflowMap[cohort.id]}|"
                                   class="small fw-bold text-muted">
                                 +N

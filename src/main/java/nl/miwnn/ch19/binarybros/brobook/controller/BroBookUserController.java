@@ -93,7 +93,7 @@ public class BroBookUserController {
         return "redirect:/user/all";
     }
 
-    @GetMapping("/user/delete/{id}")
+    @PostMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         broBookUserService.deleteById(id);
         return "redirect:/user/all";
