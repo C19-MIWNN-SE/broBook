@@ -44,9 +44,11 @@ public class BroBookSecurityConfig {
                                 "/activate/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/user/delete/**",
-                                "/info/edit/**")
-                        .hasAnyRole("ADMIN","Teacher")
+                                "/info/edit/**"
+                        ).hasAnyRole("ADMIN","Teacher", "Student")
+                        .requestMatchers(
+                                "/user/delete/**"
+                        ).hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(form -> form
                         .loginPage("/login")
