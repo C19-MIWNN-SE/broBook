@@ -1,5 +1,6 @@
 package nl.miwnn.ch19.binarybros.brobook.model;
 
+import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -22,18 +23,22 @@ public class BroBookUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CsvBindByName(column = "gebruikersnaam")
     @NotBlank(message = "Een gebruikersnaam is verplicht voor elke gebruiker")
     private String username;
 
     private String password;
 
+    @CsvBindByName(column = "rol")
     @NotNull(message = "Vul de rol voor deze gebruiker in.")
     private String role;
 
+    @CsvBindByName(column = "voornaam")
     @NotBlank(message = "Een voornaam is verplicht voor elke gebruiker.")
     @Column(nullable = false)
     private String firstName;
 
+    @CsvBindByName(column = "achternaam")
     @NotBlank(message = "Een achternaam is verplicht voor elke gebruiker.")
     private String lastName;
 

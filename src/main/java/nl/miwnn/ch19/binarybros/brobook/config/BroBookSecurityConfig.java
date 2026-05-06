@@ -42,6 +42,10 @@ public class BroBookSecurityConfig {
                                 "/image/**",
                                 "/webjars/**"
                         ).permitAll()
+                        .requestMatchers(
+                                "/user/delete/**",
+                                "/info/edit/**")
+                        .hasAnyRole("ADMIN","Teacher")
                         .anyRequest().authenticated()
                 ).formLogin(form -> form
                         .loginPage("/login")

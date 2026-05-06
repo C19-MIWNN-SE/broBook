@@ -18,6 +18,35 @@
         <a th:href="@{/user/add}" class="btn btn-primary">Nieuwe gebruiker toevoegen</a>
         <a th:href="@{/}" class="btn btn-outline-secondary ms-2">Terug naar start</a>
     </div>
+    <div sec:authorize="hasRole('ADMIN')" class="card p-4 mb-4 border-dashed shadow-sm">
+        <h5 class="serif fw-bold" style="color: var(--bro-navy)">Bulk Import & Cohort Toewijzing</h5>
+
+        <form th:action="@{/user/import}" method="post" enctype="multipart/form-data">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label class="small fw-bold text-muted text-uppercase">Toewijzen aan cohort</label>
+                    <select name="cohortId" class="form-control" required>
+                        <option value="">-- Selecteer Cohort --</option>
+                        <option th:each="cohort : ${allCohorts}"
+                                th:value="${cohort.id}"
+                                th:text="${cohort.name}">Cohort Naam</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="small fw-bold text-muted text-uppercase">CSV Bestand</label>
+                    <input type="file" name="csvFile" accept=".csv" class="form-control" required>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">Uploaden</button>
+                </div>
+            </div>
+            <small class="text-muted d-block mt-2">
+                De geüploade gebruikers worden automatisch gekoppeld aan het geselecteerde cohort.
+            </small>
+        </form>
+    </div>
 
     <div class="bg-white shadow-sm rounded p-3">
         <table class="table align-middle">
@@ -67,13 +96,11 @@
                 </td>
 
                 <td>
-                    <a th:href="@{/delete/{id}(id=${user.id})}"
+                    <a th:href="@{/user/delete/{id}(id=${user.id})}"
                        class="btn btn-sm btn-primary">
-                        Verwijder
+                        Verwijder gebruiker
                     </a>
                 </td>
-
-
 
             </tr>
             </tbody>

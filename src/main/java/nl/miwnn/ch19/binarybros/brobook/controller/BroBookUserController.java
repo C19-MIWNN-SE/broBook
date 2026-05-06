@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -35,9 +36,8 @@ public class BroBookUserController {
     @GetMapping("/user/all")
     public String showUserOverview(Model model, Principal principal) {
         BroBookUser currentUser = broBookUserService.getUserByUsername(principal.getName());
-
         model.addAttribute("allUsers", broBookUserService.findVisibleUsers(currentUser));
-
+        model.addAttribute("allCohorts", cohortService.findAll());
         return "user/overview";
     }
 
@@ -65,7 +65,20 @@ public class BroBookUserController {
         return "redirect:/user/all";
     }
 
-    @PostMapping("/user/delete/{id}")
+    @PostMapping("/user/import")
+    public String importUsers(@RequestParam("csvFile") MultipartFile file,
+                              @RequestParam("cohortId") Long cohortId,
+                              RedirectAttributes ra) {
+        try {
+            broBookUserService.importUsersFromCsv(file, cohortId);
+            ra.addFlashAttribute("success", "Gebruikers succesvol geïmporteerd en gekoppeld!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Fout bij import: " + e.getMessage());
+        }
+        return "redirect:/user/all";
+    }
+
+    @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         broBookUserService.deleteById(id);
         return "redirect:/user/all";
@@ -114,6 +127,4 @@ public class BroBookUserController {
                         : null);
         return "user/details";
     }
-
-
 }

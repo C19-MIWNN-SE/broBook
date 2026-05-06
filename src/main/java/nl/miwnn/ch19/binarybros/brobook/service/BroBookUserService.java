@@ -6,11 +6,13 @@
 
 package nl.miwnn.ch19.binarybros.brobook.service;
 
+import com.opencsv.bean.CsvToBeanBuilder;
 import nl.miwnn.ch19.binarybros.brobook.dto.NewUserFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
+import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +20,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.*;
 
 @Service
@@ -27,15 +32,17 @@ public class BroBookUserService implements UserDetailsService {
     private final ImageService imageService;
     private final BroBookUserMapper broBookUserMapper;
     private final CohortService cohortService;
+    private final CohortRepository cohortRepository;
 
     public BroBookUserService(BroBookUserRepository userRepository,
                               ImageService imageService,
                               BroBookUserMapper broBookUserMapper,
-                              CohortService cohortService) {
+                              CohortService cohortService, CohortRepository cohortRepository) {
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.broBookUserMapper = broBookUserMapper;
         this.cohortService = cohortService;
+        this.cohortRepository = cohortRepository;
     }
 
     @Override
@@ -107,5 +114,25 @@ public class BroBookUserService implements UserDetailsService {
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public void importUsersFromCsv(MultipartFile file, Long cohortId) throws Exception {
+        Cohort targetCohort = cohortRepository.findById(cohortId)
+                .orElseThrow(() -> new Exception("Geselecteerd cohort niet gevonden."));
+
+        try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+            List<BroBookUser> users = new CsvToBeanBuilder<BroBookUser>(reader)
+                    .withType(BroBookUser.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .withSeparator(',')
+                    .build()
+                    .parse();
+
+            for (BroBookUser user : users) {
+                if (user.getRole() == null) user.setRole("Student");
+                user.getCohorts().add(targetCohort);
+                userRepository.save(user);
+            }
+        }
     }
 }

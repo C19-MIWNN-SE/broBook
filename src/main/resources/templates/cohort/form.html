@@ -12,11 +12,6 @@
             <div class="card p-4">
                 <h2 class="fw-bold mb-4" style="color: var(--bro-navy)">Nieuw Cohort</h2>
                 <form th:action="@{/cohort/save}" th:object="${newCohort}" method="post">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Cohort naam</label>
-                        <input type="text" class="form-control form-control-lg" th:field="*{name}"
-                               placeholder="Bijv. Cohort 19">
-                    </div>
 
                     <div th:replace="~{fragments/form :: formField(
                         'name', 'Naam cohort', 'Bijv. Cohort 19', 'text')}">
