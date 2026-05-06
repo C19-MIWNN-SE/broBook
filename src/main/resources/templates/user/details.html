@@ -21,8 +21,10 @@
                          class="profile-initials rounded-circle w-100 d-flex align-items-center
                                     justify-content-center fw-bold fs-1 mx-auto serif"
                          style="aspect-ratio: 1 / 1">
-                        MS
-<!--                        TODO add initials-->
+                        <span th:text="${#strings.substring(shownUser.firstName, 0, 1)
+                                        + #strings.substring(shownUser.lastName, 0, 1)}">
+                            Initialen
+                        </span>
                     </div>
                 </div>
 

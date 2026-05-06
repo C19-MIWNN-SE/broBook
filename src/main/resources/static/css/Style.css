@@ -59,7 +59,7 @@ body {
 }
 
 .profile-initials {
-    background: #2a4a7f;
+    background: var(--bro-navy);
     color: rgba(255, 255, 255, .8);
     border: 4px solid rgba(201, 168, 76, .55);
     aspect-ratio: 1 / 1;
