@@ -18,6 +18,10 @@ import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -102,6 +106,17 @@ public class BroBookUserService implements UserDetailsService {
                 .stream()
                 .filter(user -> user.getRole() == role)
                 .toList();
+    }
+
+    public Page<BroBookUser> getPaginatedUsers(int page, int size, String searchTerm) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            return userRepository.findByFirstNameContainingOrLastNameContainingAllIgnoreCase(
+                    searchTerm, searchTerm, pageable);
+        }
+
+        return userRepository.findAll(pageable);
     }
 
     public UserAccountFormDTO getUserAccountFormDTO(Long id) {

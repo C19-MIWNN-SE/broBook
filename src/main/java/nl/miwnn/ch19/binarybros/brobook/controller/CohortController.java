@@ -8,10 +8,8 @@ import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -104,8 +102,31 @@ public class CohortController {
         Cohort cohort = cohortService.getCohortById(id);
 
         model.addAttribute("selectedCohort", cohort);
+        model.addAttribute("allUsers", broBookUserService.findAll());
         model.addAttribute("students", broBookUserService.getParticipantsByRole(cohort, Role.STUDENT));
         model.addAttribute("teachers", broBookUserService.getParticipantsByRole(cohort, Role.TEACHER));
         return "cohort/details";
+    }
+
+    @PostMapping("/cohort/{id}/add-manual")
+    public String addUserManual(@PathVariable Long id, @RequestParam Long userId) {
+        Cohort cohort = cohortService.getCohortById(id);
+        BroBookUser user = broBookUserRepository.findById(userId).orElse(null);
+
+        if (cohort != null && user != null) {
+            user.getCohorts().add(cohort);
+            broBookUserRepository.save(user);
+        }
+        return "redirect:/cohort/details/" + id;
+    }
+
+    @PostMapping("/cohort/{id}/import")
+    public String importToSpecificCohort(@PathVariable Long id, @RequestParam("csvFile") MultipartFile file) {
+        try {
+            broBookUserService.importUsersFromCsv(file, id);
+        } catch (Exception e) {
+            // Log error
+        }
+        return "redirect:/cohort/details/" + id;
     }
 }
