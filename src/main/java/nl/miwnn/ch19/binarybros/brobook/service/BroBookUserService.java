@@ -81,7 +81,7 @@ public class BroBookUserService implements UserDetailsService {
 
         Set<BroBookUser> visibleUsers = new HashSet<>();
 
-        visibleUsers.addAll(userRepository.findByRole("Teacher"));
+        visibleUsers.addAll(userRepository.findByRole(Role.TEACHER));
 
         visibleUsers.add(currentUser);
 
