@@ -46,9 +46,11 @@ public class CohortController {
     }
 
     @PostMapping("/cohort/save")
-    public String saveCohort(@ModelAttribute Cohort cohort){
+    public String saveCohort(@ModelAttribute Cohort cohort, Principal principal){
 
-        cohortService.save(cohort);
+        BroBookUser loggedInUser = broBookUserService.getUserByUsername(principal.getName());
+
+        cohortService.saveCohort(cohort, loggedInUser);
         return "redirect:/cohort/all";
     }
 

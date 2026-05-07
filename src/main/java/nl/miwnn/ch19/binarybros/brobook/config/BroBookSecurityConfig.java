@@ -8,17 +8,16 @@ package nl.miwnn.ch19.binarybros.brobook.config;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity
 public class BroBookSecurityConfig {
 
     private final BroBookUserService broBookUserService;
@@ -44,10 +43,17 @@ public class BroBookSecurityConfig {
                                 "/activate/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/info/edit/**"
-                        ).hasAnyRole("ADMIN","TEACHER", "STUDENT")
+                                "/cohort/add",
+                                "/cohort/save",
+                                "/cohort/*/add-manual",
+                                "/cohort/*/import",
+                                "/user/add",
+                                "/user/save",
+                                "/user/edit/**",
+                                "/user/import"
+                        ).hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(
-                                "/user/delete/**"
+                                "/user/**"
                         ).hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(form -> form

@@ -11,6 +11,7 @@ import nl.miwnn.ch19.binarybros.brobook.dto.TokenFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.service.UserActivationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -80,6 +81,7 @@ public class UserActivationController {
         return "redirect:/login";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @PostMapping("/activate/print")
     public String printActivations(@RequestParam List<Long> selectedUsers, Model model) {
         log.debug("Printpagina opgevraagd voor ids: {}", selectedUsers);

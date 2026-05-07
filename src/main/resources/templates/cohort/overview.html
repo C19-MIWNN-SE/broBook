@@ -10,7 +10,9 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fw-bold" style="color: var(--bro-navy)">Ontdek Cohorten</h1>
 
-        <a th:href="@{/cohort/add}" class="btn btn-primary shadow-sm">
+        <a th:href="@{/cohort/add}"
+           sec:authorize="hasAnyRole('ADMIN', 'TEACHER')"
+           class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-lg me-2"></i>Nieuw Cohort Toevoegen
         </a>
     </div>

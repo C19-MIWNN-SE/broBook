@@ -10,6 +10,7 @@ import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -128,9 +129,9 @@ public class BroBookUserController {
 
         BroBookUser loggedInUser = broBookUserService.getUserByUsername(principal.getName());
         log.debug("Ingelogde gebruiker: {}", loggedInUser.getUsername());
-        if (loggedInUser.getId() != id) {
+        if (!loggedInUser.getId().equals(id)) {
             log.warn("Gebruiker heeft geen toegang tot dit formulier: {}", loggedInUser.getUsername());
-            return "redirect:/user/all";
+            throw new AccessDeniedException("Gebruiker heeft geen toegang tot dit bewerkformulier");
         }
 
         UserInfoFormDTO dto = broBookUserService.getUserInfoFormDTO(id);
