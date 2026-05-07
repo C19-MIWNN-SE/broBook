@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content}, ~{})}">
+<head>
+    <title>Er ging iets mis</title>
+    <th:block th:fragment="extraHead">
+    </th:block>
+</head>
+<body>
+<div id="content">
+    <h1>Status 500 - Er ging iets mis</h1>
+    <p>Er is een onverwachte fout opgetreden.
+        Probeer het later opnieuw.</p>
+
+    <p th:if="${bericht != null}"
+       th:text="${bericht}"
+       style="color: gray; font-size: 0.9em;">
+        Foutmelding
+    </p>
+
+    <p>
+        <a th:href="@{/cohort/all}">Terug naar het cohortoverzicht</a>
+    </p>
+</div>
+</body>
+</html>

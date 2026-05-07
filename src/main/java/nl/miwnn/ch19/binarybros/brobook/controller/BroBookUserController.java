@@ -10,6 +10,7 @@ import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -125,9 +126,16 @@ public class BroBookUserController {
     }
 
     @GetMapping("/info/edit/{id}")
-    public String showNewInfoForm(@PathVariable Long id,
+    public String showNewInfoForm(@PathVariable Long id, Principal principal,
                                   Model model) {
         log.debug("Formulier voor toevoegen gebruikersinformatie opgevraagd voor gebruiker met id: {}", id);
+
+        BroBookUser loggedInUser = broBookUserService.getUserByUsername(principal.getName());
+        log.debug("Ingelogde gebruiker: {}", loggedInUser.getUsername());
+        if (!loggedInUser.getId().equals(id)) {
+            log.warn("Gebruiker heeft geen toegang tot dit formulier: {}", loggedInUser.getUsername());
+            throw new AccessDeniedException("Gebruiker heeft geen toegang tot dit bewerkformulier");
+        }
 
         UserInfoFormDTO dto = broBookUserService.getUserInfoFormDTO(id);
         model.addAttribute("dtoToEdit", dto);
@@ -136,10 +144,18 @@ public class BroBookUserController {
 
     @PostMapping("/info/save")
     public String saveInfoForm(@ModelAttribute("dtoToEdit") @Valid UserInfoFormDTO dto,
-                               BindingResult bindingResult,
+                               BindingResult bindingResult, Principal principal,
                                @RequestParam("imageFile") MultipartFile imageFile,
                                Model model) {
         log.info("Gebruikersinformatie opslaan: {}", dto.getId());
+
+        BroBookUser loggedInUser = broBookUserService.getUserByUsername(principal.getName());
+        if (!loggedInUser.getId().equals(dto.getId())) {
+            log.warn("Gebruiker {} probeert formulier van {} te bewerken",
+                    loggedInUser.getUsername(), dto.getFirstName() + dto.getLastName());
+            return "redirect:/user/all";
+        }
+
         if (bindingResult.hasErrors()) {
             log.warn("Validatiefouten bij opslaan gebruikersinformatie: {}", bindingResult.getErrorCount());
             return "user/info-form";

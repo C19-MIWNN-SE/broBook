@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content}, ~{})}">
+<head>
+    <title>Geen toegang</title>
+    <th:block th:fragment="extraHead">
+    </th:block>
+</head>
+<body>
+<div id="content">
+    <h1>Status 403 - Geen toegang tot deze pagina</h1>
+    <p th:text="${bericht}">Je hebt geen toegang tot de pagina die je probeert te bezoeken.</p>
+    <p>
+        <a th:href="@{/cohort/all}">Terug naar het cohortoverzicht</a>
+    </p>
+</div>
+</body>
+</html>

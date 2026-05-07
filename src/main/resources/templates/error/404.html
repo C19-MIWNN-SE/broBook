@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::#content}, ~{})}">
+<head>
+    <title>Pagina niet gevonden</title>
+    <th:block th:fragment="extraHead">
+    </th:block>
+</head>
+<body>
+<div id="content">
+    <h1>Status 404 - Pagina niet gevonden</h1>
+    <p th:text="${bericht}">De gevraagde pagina bestaat niet.</p>
+    <p>
+        <a th:href="@{/cohort/all}">Terug naar het cohortoverzicht</a>
+    </p>
+</div>
+</body>
+</html>

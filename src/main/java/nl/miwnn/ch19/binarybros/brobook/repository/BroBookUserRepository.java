@@ -26,7 +26,6 @@ public interface BroBookUserRepository extends JpaRepository<BroBookUser, Long> 
 
 
     Optional<BroBookUser> findByUsername(String username);
-    List<BroBookUser> findByRole(String role);
     Page<BroBookUser> findByFirstNameContainingOrLastNameContainingAllIgnoreCase(
             String firstName, String lastName, Pageable pageable);
     List<BroBookUser> findByRole(Role role);
