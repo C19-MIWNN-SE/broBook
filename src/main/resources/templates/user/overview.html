@@ -79,6 +79,10 @@
                 <th style="color: var(--bro-navy)">Rol</th>
                 <th style="color: var(--bro-navy)">Actief</th>
                 <th></th>
+                <th></th>
+                <th></th>
+
+
             </tr>
             </thead>
             <tbody>
@@ -143,16 +147,19 @@
         <nav th:if="${totalPages > 1}" aria-label="Page navigation" class="mt-4">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/user/all(page=${currentPage - 1}, search=${searchTerm})}">&laquo;</a>
+                    <a class="page-link" th:href="@{/user/all(page=${currentPage - 1},
+                     search=${searchTerm}, cohortId=${selectedCohortId})}">&laquo;</a>
                 </li>
 
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                     th:classappend="${currentPage == i} ? 'active'">
-                    <a class="page-link" th:href="@{/user/all(page=${i}, search=${searchTerm})}" th:text="${i + 1}">1</a>
+                    <a class="page-link" th:href="@{/user/all(page=${i},
+                     search=${searchTerm}, cohortId=${selectedCohortId})}" th:text="${i + 1}">1</a>
                 </li>
 
                 <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/user/all(page=${currentPage + 1}, search=${searchTerm})}">&raquo;</a>
+                    <a class="page-link" th:href="@{/user/all(page=${currentPage + 1},
+                     search=${searchTerm}, cohortId=${selectedCohortId})}">&raquo;</a>
                 </li>
             </ul>
         </nav>
