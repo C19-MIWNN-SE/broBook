@@ -124,7 +124,7 @@ public class BroBookUserController {
         log.info("Gebruikersinformatie opslaan: {}", dto.getId());
 
         BroBookUser loggedInUser = broBookUserService.getUserByUsername(principal.getName());
-        if (loggedInUser.getId() != dto.getId()) {
+        if (!loggedInUser.getId().equals(dto.getId())) {
             log.warn("Gebruiker {} probeert formulier van {} te bewerken",
                     loggedInUser.getUsername(), dto.getFirstName() + dto.getLastName());
             return "redirect:/user/all";
