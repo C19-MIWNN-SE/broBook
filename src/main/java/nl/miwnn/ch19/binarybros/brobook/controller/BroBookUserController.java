@@ -9,6 +9,7 @@ import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,10 +35,20 @@ public class BroBookUserController {
     }
 
     @GetMapping("/user/all")
-    public String showUserOverview(Model model, Principal principal) {
-        BroBookUser currentUser = broBookUserService.getUserByUsername(principal.getName());
-        model.addAttribute("allUsers", broBookUserService.findVisibleUsers(currentUser));
+    public String showUserOverview(
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search) {
+
+        Page<BroBookUser> userPage = broBookUserService.getPaginatedUsers(page, size, search);
+
+        model.addAttribute("allUsers", userPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("searchTerm", search);
         model.addAttribute("allCohorts", cohortService.findAll());
+
         return "user/overview";
     }
 
@@ -96,6 +107,17 @@ public class BroBookUserController {
     @PostMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         broBookUserService.deleteById(id);
+        return "redirect:/user/all";
+    }
+
+    @PostMapping("/user/delete-selected")
+    public String deleteSelectedUsers(@RequestParam(value = "selectedUsers", required = false)
+                                          List<Long> selectedUsers) {
+        if (selectedUsers != null && !selectedUsers.isEmpty()) {
+            for (Long id : selectedUsers) {
+                broBookUserService.deleteById(id);
+            }
+        }
         return "redirect:/user/all";
     }
 

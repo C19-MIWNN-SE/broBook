@@ -18,21 +18,47 @@
     </div>
 
     <div class="mb-3">
-        <a th:href="@{/user/add}" class="btn btn-primary">Nieuwe gebruiker toevoegen</a>
-        <a th:href="@{/}" class="btn btn-outline-secondary ms-2">Terug naar start</a>
     </div>
 
     <div class="d-flex gap-2 mb-3">
-        <button type="button" class="btn btn-danger btn-sm">
-            Verwijder selectie
+        <button type="button" class="btn btn-danger btn-sm"
+                th:data-url="@{/user/delete-selected}"
+                onclick="if(confirm('Weet je zeker dat je alle geselecteerde gebruikers wilt verwijderen?'))
+                submitSelected(this.getAttribute('data-url'))">
+            <i class="bi bi-trash me-1"></i> Verwijder selectie
         </button>
         <button type="button" class="btn btn-secondary btn-sm"
-                th:data-url="@{/activate/print}" onclick="submitSelected(this.getAttribute('data-url'))">
-            Print activatiecodes
+                th:data-url="@{/activate/print}"
+                onclick="submitSelected(this.getAttribute('data-url'))">
+            <i class="bi bi-printer me-1"></i> Print activatiecodes
+        </button>
+        <button type="button" class="btn btn-primary btn-sm"
+                th:onclick="|window.location.href='@{/user/add}'|">
+            <i class="bi bi-person-plus-fill me-1"></i> Nieuwe gebruiker toevoegen
         </button>
     </div>
 
+
+
     <div class="bg-white shadow-sm rounded p-3">
+        <div class="card p-3 mb-4 shadow-sm border-0">
+            <form th:action="@{/user/all}" method="get" class="row g-2 align-items-center">
+                <div class="col-md-8">
+                    <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted">
+                    <i class="bi bi-search"></i>
+                </span>
+                        <input type="text" name="search" th:value="${searchTerm}"
+                               class="form-control border-start-0 ps-0"
+                               placeholder="Zoek op naam...">
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1">Filteren</button>
+                    <a th:href="@{/user/all}" class="btn btn-outline-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
         <table class="table align-middle">
             <thead class="border-bottom">
             <tr>
@@ -104,6 +130,23 @@
             </tr>
             </tbody>
         </table>
+
+        <nav th:if="${totalPages > 1}" aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/user/all(page=${currentPage - 1}, search=${searchTerm})}">&laquo;</a>
+                </li>
+
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${currentPage == i} ? 'active'">
+                    <a class="page-link" th:href="@{/user/all(page=${i}, search=${searchTerm})}" th:text="${i + 1}">1</a>
+                </li>
+
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/user/all(page=${currentPage + 1}, search=${searchTerm})}">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
 
         <div th:if="${allUsers.isEmpty()}" class="text-center p-4">
             <p class="text-muted">Er zijn nog geen gebruikers toegevoegd.</p>

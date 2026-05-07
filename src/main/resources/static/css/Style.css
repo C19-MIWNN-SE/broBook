@@ -130,3 +130,12 @@ body {
     padding-right: 15px;
 }
 
+.pagination .page-item.active .page-link {
+    background-color: var(--bro-orange);
+    border-color: var(--bro-orange);
+    color: white;
+}
+.pagination .page-link {
+    color: var(--bro-navy);
+}
+
