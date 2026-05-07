@@ -45,7 +45,7 @@ public class BroBookSecurityConfig {
                         ).permitAll()
                         .requestMatchers(
                                 "/info/edit/**"
-                        ).hasAnyRole("ADMIN","Teacher", "Student")
+                        ).hasAnyRole("ADMIN","TEACHER", "STUDENT")
                         .requestMatchers(
                                 "/user/delete/**"
                         ).hasAnyRole("ADMIN")

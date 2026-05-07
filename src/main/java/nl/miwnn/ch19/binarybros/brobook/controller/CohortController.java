@@ -4,6 +4,7 @@ import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
+import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +27,17 @@ import java.util.Optional;
 @Controller
 public class CohortController {
 
-    private static final int VISIBLE_USER_BUBBLES = 3   ;
+    private static final int VISIBLE_USER_BUBBLES = 3;
+
     private final CohortService cohortService;
+    private final BroBookUserService broBookUserService;
     private final BroBookUserRepository broBookUserRepository;
 
-    public CohortController(CohortService cohortService, BroBookUserRepository broBookUserRepository) {
+    public CohortController(CohortService cohortService,
+                            BroBookUserService broBookUserService,
+                            BroBookUserRepository broBookUserRepository) {
         this.cohortService = cohortService;
+        this.broBookUserService = broBookUserService;
         this.broBookUserRepository = broBookUserRepository;
     }
 
@@ -94,10 +100,12 @@ public class CohortController {
     }
 
     @GetMapping("/cohort/details/{id}")
-    public String showCohortDetails(@PathVariable("id") Long id, Model model){
+    public String showCohortDetails(@PathVariable Long id, Model model){
         Cohort cohort = cohortService.getCohortById(id);
 
         model.addAttribute("selectedCohort", cohort);
+        model.addAttribute("students", broBookUserService.getParticipantsByRole(cohort, Role.STUDENT));
+        model.addAttribute("teachers", broBookUserService.getParticipantsByRole(cohort, Role.TEACHER));
         return "cohort/details";
     }
 }

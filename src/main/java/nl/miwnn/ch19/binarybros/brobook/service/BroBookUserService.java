@@ -16,6 +16,8 @@ import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.mapper.BroBookUserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,27 +33,26 @@ import java.util.*;
 @Service
 public class BroBookUserService implements UserDetailsService {
 
+    private static final Logger log = LoggerFactory.getLogger(BroBookUserService.class);
+
     private final BroBookUserRepository userRepository;
     private final ImageService imageService;
     private final BroBookUserMapper broBookUserMapper;
     private final CohortService cohortService;
     private final CohortRepository cohortRepository;
     private final UserActivationService userActivationService;
-    private final PasswordEncoder passwordEncoder;
 
     public BroBookUserService(BroBookUserRepository userRepository,
                               ImageService imageService,
                               BroBookUserMapper broBookUserMapper,
                               CohortService cohortService, CohortRepository cohortRepository,
-                              UserActivationService userActivationService,
-                              PasswordEncoder passwordEncoder) {
+                              UserActivationService userActivationService) {
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.broBookUserMapper = broBookUserMapper;
         this.cohortService = cohortService;
         this.cohortRepository = cohortRepository;
         this.userActivationService = userActivationService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -93,6 +94,13 @@ public class BroBookUserService implements UserDetailsService {
         result.sort(Comparator.comparing(BroBookUser::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
 
         return result;
+    }
+
+    public List<BroBookUser> getParticipantsByRole(Cohort cohort, Role role) {
+        return cohort.getParticipants()
+                .stream()
+                .filter(user -> user.getRole() == role)
+                .toList();
     }
 
     public UserAccountFormDTO getUserAccountFormDTO(Long id) {

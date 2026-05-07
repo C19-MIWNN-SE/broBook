@@ -7,8 +7,10 @@ package nl.miwnn.ch19.binarybros.brobook.config;
  */
 
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
+import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -29,16 +31,17 @@ import java.io.IOException;
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request,
                                             HttpServletResponse response,
-                                            Authentication authentication) throws IOException, ServletException {
+                                            Authentication authentication) throws IOException {
 
             String username = authentication.getName();
-            BroBookUser user = userRepository.findByUsername(username).orElse(null);
+            BroBookUser user = userRepository.findByUsername(username).orElseThrow(
+                    () -> new UsernameNotFoundException("Deze gebruiker is niet gevonden"));
 
-            if (user != null &&  user.getRole().equals("Student")) {
+            if (user.getRole() == Role.STUDENT) {
                 response.sendRedirect("/info/detail/" + user.getId());
-            }else if (user != null && user.getRole().equals("Teacher")){
+            }else if (user.getRole() == Role.TEACHER){
                 response.sendRedirect("/cohort/all");
-            }else if (user != null && user.getRole().equals("ADMIN")){
+            }else if (user.getRole() == Role.ADMIN){
                 response.sendRedirect("/user/all");
             }
         }

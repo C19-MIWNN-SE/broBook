@@ -19,6 +19,7 @@
                 <span th:text="${selectedCohort.participants.size()} + ' Deelnemers'"></span>
             </div>
         </div>
+    </div>
 
     <div class="container mb-5">
         <div class="row justify-content-center">
@@ -36,7 +37,7 @@
                             <span class="badge rounded-pill px-2"
                                   style="background: rgba(201, 168, 76, 0.15); color: var(--bro-orange);
                                          border: 1px solid rgba(201, 168, 76, 0.3); font-size: 0.75rem;">
-                                <span th:text="${selectedCohort.participants.?[role == 'Student'].size()}">0</span>
+                                <span th:text="${students.size()}">0</span>
                             </span>
                         </div>
                         <i class="bi bi-chevron-up collapse-icon" id="studentsIcon"
@@ -47,8 +48,7 @@
                     <div class="collapse show" id="studentsCollapse">
                         <div class="row g-3 mt-1">
 
-                            <div th:each="user : ${selectedCohort.participants}"
-                                 th:if="${user.role != null && (user.role == 'Student')}"
+                            <div th:each="user : ${students}"
                                  class="col-md-6 col-xl-4">
                                 <div class="cohort-detail-info-tile p-3 rounded d-flex flex-column align-items-center h-100 shadow-sm position-relative">
                                     <img th:if="${user.profilePicture != null}"
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div th:if="${selectedCohort.participants.?[role == 'Student'].isEmpty()}" class="text-center py-4">
+                        <div th:if="${students.isEmpty()}" class="text-center py-4">
                             <p class="text-muted small">Er zijn nog geen studenten gekoppeld.</p>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                             <span class="badge rounded-pill px-2"
                                   style="background: rgba(201, 168, 76, 0.15); color: var(--bro-orange);
                                          border: 1px solid rgba(201, 168, 76, 0.3); font-size: 0.75rem;">
-                                <span th:text="${selectedCohort.participants.?[role == 'Teacher'].size()}">0</span>
+                                <span th:text="${teachers.size()}">0</span>
                             </span>
                         </div>
                         <i class="bi bi-chevron-up collapse-icon" id="teachersIcon"
@@ -100,8 +100,7 @@
                     <div class="collapse show" id="teachersCollapse">
                         <div class="row g-3 mt-1">
 
-                            <div th:each="user : ${selectedCohort.participants}"
-                                 th:if="${user.role != null && (user.role == 'Teacher')}"
+                            <div th:each="user : ${teachers}"
                                  class="col-md-6 col-xl-4">
 
                                 <div class="cohort-detail-info-tile p-3 rounded d-flex flex-column align-items-center h-100 shadow-sm position-relative">
@@ -126,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div th:if="${selectedCohort.participants.?[role == 'Teacher'].isEmpty()}" class="text-center py-4">
+                        <div th:if="${teachers.isEmpty()}" class="text-center py-4">
                             <p class="text-muted small">Er zijn nog geen docenten gekoppeld.</p>
                         </div>
                     </div>
