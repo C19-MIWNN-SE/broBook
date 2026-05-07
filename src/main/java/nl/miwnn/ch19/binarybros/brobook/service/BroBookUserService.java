@@ -11,6 +11,7 @@ import nl.miwnn.ch19.binarybros.brobook.dto.UserAccountFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.dto.UserInfoFormDTO;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.model.UserActivation;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
@@ -72,8 +73,7 @@ public class BroBookUserService implements UserDetailsService {
     }
 
     public List<BroBookUser> findVisibleUsers(BroBookUser currentUser) {
-        if (currentUser.getRole() != null &&
-                ("ADMIN".equalsIgnoreCase(currentUser.getRole()) || "Teacher".equalsIgnoreCase(currentUser.getRole()))) {
+        if (currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.TEACHER) {
             return userRepository.findAll();
         }
 
@@ -172,7 +172,7 @@ public class BroBookUserService implements UserDetailsService {
                     .parse();
 
             for (BroBookUser user : users) {
-                if (user.getRole() == null) user.setRole("Student");
+                if (user.getRole() == null) user.setRole(Role.STUDENT);
                 user.getCohorts().add(targetCohort);
                 userRepository.save(user);
             }

@@ -2,6 +2,7 @@ package nl.miwnn.ch19.binarybros.brobook.controller;
 
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
+import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,7 @@ public class CohortController {
         if (currentUser.isPresent()) {
             BroBookUser user = currentUser.get();
 
-            if ("STUDENT".equalsIgnoreCase(user.getRole()) || "TEACHER".equalsIgnoreCase(user.getRole())) {
+            if (user.getRole() == Role.STUDENT || user.getRole() == Role.TEACHER) {
                 displayCohorts = user.getCohorts();
                 overviewTitle = "Mijn Cohorten";
             } else {

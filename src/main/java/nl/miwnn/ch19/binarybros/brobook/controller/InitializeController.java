@@ -8,6 +8,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import nl.miwnn.ch19.binarybros.brobook.model.BroBookUser;
 import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.model.Image;
+import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.ImageService;
@@ -69,7 +70,7 @@ public class InitializeController {
     private void userSeed() {
         BroBookUser beheerder = new BroBookUser(
                 "beheerder","De", "Beheerder",
-                passwordEncoder.encode("beheerder"), "ADMIN");
+                passwordEncoder.encode("beheerder"), Role.ADMIN);
         broBookUserRepository.save(beheerder);
     }
 

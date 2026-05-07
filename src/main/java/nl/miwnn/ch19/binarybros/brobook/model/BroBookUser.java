@@ -35,7 +35,8 @@ public class BroBookUser implements UserDetails {
 
     @CsvBindByName(column = "rol")
     @NotNull(message = "Vul de rol voor deze gebruiker in.")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @CsvBindByName(column = "voornaam")
     @NotBlank(message = "Een voornaam is verplicht voor elke gebruiker.")
@@ -73,7 +74,7 @@ public class BroBookUser implements UserDetails {
 
     public BroBookUser() {}
 
-    public BroBookUser(String username, String firstName, String lastName, String password, String role) {
+    public BroBookUser(String username, String firstName, String lastName, String password, Role role) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -88,7 +89,7 @@ public class BroBookUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
@@ -192,11 +193,11 @@ public class BroBookUser implements UserDetails {
         this.bio = bio;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
