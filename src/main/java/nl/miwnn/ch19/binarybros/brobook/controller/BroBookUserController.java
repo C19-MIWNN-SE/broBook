@@ -37,16 +37,19 @@ public class BroBookUserController {
     @GetMapping("/user/all")
     public String showUserOverview(
             Model model,
+            Principal principal,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long cohortId) { // Nieuwe parameter
 
-        Page<BroBookUser> userPage = broBookUserService.getPaginatedUsers(page, size, search);
+        Page<BroBookUser> userPage = broBookUserService.getPaginatedUsers(page, size, search, cohortId);
 
         model.addAttribute("allUsers", userPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("searchTerm", search);
+        model.addAttribute("selectedCohortId", cohortId); // Terugsturen om dropdown op de juiste waarde te houden
         model.addAttribute("allCohorts", cohortService.findAll());
 
         return "user/overview";

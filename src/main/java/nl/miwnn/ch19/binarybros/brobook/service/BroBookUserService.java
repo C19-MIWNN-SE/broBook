@@ -108,12 +108,17 @@ public class BroBookUserService implements UserDetailsService {
                 .toList();
     }
 
-    public Page<BroBookUser> getPaginatedUsers(int page, int size, String searchTerm) {
+    public Page<BroBookUser> getPaginatedUsers(int page, int size, String searchTerm, Long cohortId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("lastName").ascending());
+        String search = (searchTerm == null) ? "" : searchTerm;
 
-        if (searchTerm != null && !searchTerm.isEmpty()) {
+        if (cohortId != null) {
+            return userRepository.findByCohortAndSearch(cohortId, search, pageable);
+        }
+
+        if (!search.isEmpty()) {
             return userRepository.findByFirstNameContainingOrLastNameContainingAllIgnoreCase(
-                    searchTerm, searchTerm, pageable);
+                    search, search, pageable);
         }
 
         return userRepository.findAll(pageable);
