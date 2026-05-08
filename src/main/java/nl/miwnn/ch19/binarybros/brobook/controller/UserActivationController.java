@@ -43,10 +43,16 @@ public class UserActivationController {
         if (bindingResult.hasErrors()) {
             return "activations/user-step1";
         }
-        if (!userActivationService.tokenIsActive(token)) {
+        if (!userActivationService.tokenIsNotUsed(token)) {
             log.info("Niet herkende activatiecode: {}", token);
             bindingResult.rejectValue(
                     "token", "doesNotExist", "Deze activatiecode wordt niet herkend.");
+            return "activations/user-step1";
+        }
+        if (!userActivationService.tokenHasNotExpired(token)) {
+            bindingResult.rejectValue(
+                    "token", "expired",
+                    "Deze activatiecode is verlopen. Vraag een nieuwe aan.");
             return "activations/user-step1";
         }
         return "redirect:/activate/user/" + token;

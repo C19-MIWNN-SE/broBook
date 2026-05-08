@@ -47,8 +47,12 @@ public class UserActivationService {
         return activations;
     }
 
-    public boolean tokenIsActive(String token) {
+    public boolean tokenIsNotUsed(String token) {
         return userActivationRepository.existsUserActivationByTokenAndUsedIsFalse(token);
+    }
+
+    public boolean tokenHasNotExpired(String token) {
+        return userActivationRepository.existsUserActivationByTokenAndExpireDateGreaterThanEqual(token, LocalDate.now());
     }
 
     @Transactional
