@@ -10,13 +10,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BroBookUserServiceTest {
@@ -64,5 +65,19 @@ class BroBookUserServiceTest {
         List<BroBookUser> result = userService.findVisibleUsers(student);
 
         assertThat(result).containsExactlyInAnyOrder(student, classmate, teacher);
+    }
+
+    @Test
+    void importUsersFromCsv_EmptyFile_ShouldThrowException() {
+        // Arrange
+        MockMultipartFile emptyFile = new MockMultipartFile("file", "test.csv",
+                "text/csv", new byte[0]);
+
+        // Act & Assert
+        assertThrows(Exception.class, () -> {
+            userService.importUsersFromCsv(emptyFile, 1L);
+        });
+
+        verify(userRepository, never()).save(any());
     }
 }

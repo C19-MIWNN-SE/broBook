@@ -98,6 +98,7 @@ public class BroBookUserService implements UserDetailsService {
         List<BroBookUser> result = new ArrayList<>(visibleUsers);
         result.sort(Comparator.comparing(BroBookUser::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
 
+
         return result;
     }
 
