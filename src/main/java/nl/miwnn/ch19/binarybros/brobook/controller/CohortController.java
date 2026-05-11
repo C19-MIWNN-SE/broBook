@@ -6,6 +6,8 @@ import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.repository.BroBookUserRepository;
 import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class CohortController {
 
     private static final int VISIBLE_USER_BUBBLES = 3;
+    private static final Logger log = LoggerFactory.getLogger(CohortController.class);
 
     private final CohortService cohortService;
     private final BroBookUserService broBookUserService;
@@ -127,6 +130,7 @@ public class CohortController {
         try {
             broBookUserService.importUsersFromCsv(file, id);
         } catch (Exception e) {
+            log.warn("Exception during CSV import: {}", e.getMessage());
             // Log error
         }
         return "redirect:/cohort/details/" + id;

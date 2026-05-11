@@ -182,10 +182,6 @@ public class BroBookUserService implements UserDetailsService {
         return !existingUser.get().getId().equals(userId);
     }
 
-    public boolean usernameExists(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
@@ -206,6 +202,7 @@ public class BroBookUserService implements UserDetailsService {
                 if (user.getRole() == null) user.setRole(Role.STUDENT);
                 user.getCohorts().add(targetCohort);
                 userRepository.save(user);
+                userActivationService.generateActivation(user);
             }
         }
     }

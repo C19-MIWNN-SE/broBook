@@ -70,6 +70,30 @@
                                             </div>
                                         </form>
                                     </div>
+
+                                    <div class="col-12 d-flex gap-2 pt-1 border-top">
+                                        <a th:href="@{/cohort/{id}/edit(id=${selectedCohort.id})}"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil me-1"></i> Cohort bewerken
+                                        </a>
+                                        <form th:action="@{/activate/print}" method="post"
+                                              class="ms-auto">
+                                            <input th:each="student : ${students}"
+                                                   type="hidden"
+                                                   name="selectedUsers"
+                                                   th:value="${student.id}">
+                                            <button type="submit" class="btn btm-sm btn-outline-secondary">
+                                                <i class="bi bi-printer me-1"></i> Print activatiecodes
+                                            </button>
+                                        </form>
+                                        <form th:action="@{/cohort/{id}/delete(id=${selectedCohort.id})}" method="post"
+                                              class="ms-auto"
+                                              onsubmit="return confirm('Weet je zeker dat je dit cohort wilt verwijderen?')">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash me-1"></i> Cohort verwijderen
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
