@@ -38,6 +38,10 @@
                     <input type="password" name="password" class="form-control form-control-lg bg-light border-0"
                            placeholder="Wachtwoord" required>
                 </div>
+                <div th:if="${param.error}" class="alert alert-danger py-2 mb-3" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    Gebruikersnaam of wachtwoord is onjuist.
+                </div>
                 <button type="submit" class="btn btn-lg btn-primary fw-bold w-100 py-3 shadow">
                     Inloggen
                 </button>

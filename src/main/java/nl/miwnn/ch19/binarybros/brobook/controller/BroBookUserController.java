@@ -153,7 +153,7 @@ public class BroBookUserController {
         if (!loggedInUser.getId().equals(dto.getId())) {
             log.warn("Gebruiker {} probeert formulier van {} te bewerken",
                     loggedInUser.getUsername(), dto.getFirstName() + dto.getLastName());
-            return "redirect:/user/all";
+            return "redirect:/";
         }
 
         if (bindingResult.hasErrors()) {
@@ -162,7 +162,7 @@ public class BroBookUserController {
         }
         broBookUserService.saveUserInformation(dto, imageFile);
 
-        return "redirect:/user/all";
+        return "redirect:/info/detail/" + dto.getId();
     }
 
     @GetMapping("/info/detail/{id}")

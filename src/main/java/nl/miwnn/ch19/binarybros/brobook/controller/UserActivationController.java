@@ -84,7 +84,7 @@ public class UserActivationController {
 
         userActivationService.savePasswordWithToken(dto.getPlainPassword(), token);
 
-        return "redirect:/login";
+        return "redirect:/";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")

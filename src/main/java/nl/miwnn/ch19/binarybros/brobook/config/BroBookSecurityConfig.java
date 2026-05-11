@@ -57,8 +57,10 @@ public class BroBookSecurityConfig {
                         ).hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(form -> form
-                        .loginPage("/login")
+                        .loginPage("/")
+                        .loginProcessingUrl("/login")
                         .successHandler(successHandler)
+                        .failureUrl("/?error=true")
                         .permitAll()
                 ).logout(logout -> logout
                         .logoutSuccessUrl("/")

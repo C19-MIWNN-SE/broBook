@@ -85,6 +85,7 @@ public class UserActivationService {
 
     public void savePasswordWithToken(String password, String token) {
         UserActivation activation = userActivationRepository.findByToken(token);
+        activation.setUsed(true);
         BroBookUser user = activation.getUser();
 
         user.setPassword(passwordEncoder.encode(password));
