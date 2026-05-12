@@ -5,6 +5,7 @@ import nl.miwnn.ch19.binarybros.brobook.model.Cohort;
 import nl.miwnn.ch19.binarybros.brobook.model.Role;
 import nl.miwnn.ch19.binarybros.brobook.repository.CohortRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class  CohortService {
 
     public List<Cohort> findAllById(List<Long> ids) {
         return cohortRepository.findAllById(ids);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Cohort> findByUser(BroBookUser user) {
+        return cohortRepository.findByParticipantsContaining(user);
     }
 
     public Cohort getCohortById(Long id) {

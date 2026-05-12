@@ -124,14 +124,6 @@ public class InitializeController {
         cohortRepository.save(new Cohort("Cohort 3", "Software Engineering", LocalDate.of(2019, 9, 1)));
         cohortRepository.save(new Cohort("Cohort 4", "Functioneel Beheer", LocalDate.of(2020, 3, 1)));
         cohortRepository.save(new Cohort("Cohort 5", "Software Engineering", LocalDate.of(2020, 9, 1)));
-        cohortRepository.save(new Cohort("Cohort 6", "Software Engineering", LocalDate.of(2021, 3, 1)));
-        cohortRepository.save(new Cohort("Cohort 7", "Functioneel Beheer", LocalDate.of(2021, 9, 1)));
-        cohortRepository.save(new Cohort("Cohort 8", "Software Engineering", LocalDate.of(2022, 3, 1)));
-        cohortRepository.save(new Cohort("Cohort 9", "Functioneel Beheer", LocalDate.of(2022, 9, 1)));
-        cohortRepository.save(new Cohort("Cohort 10", "Software Engineering", LocalDate.of(2023, 3, 1)));
-        cohortRepository.save(new Cohort("Cohort 11", "Functioneel Beheer", LocalDate.of(2023, 9, 1)));
-        cohortRepository.save(new Cohort("Cohort 12", "Software Engineering", LocalDate.of(2024, 3, 1)));
-        cohortRepository.save(new Cohort("Cohort 13", "Software Engineering", LocalDate.of(2024, 9, 1)));
         log.info("Testcohorten aangemaakt");
     }
 

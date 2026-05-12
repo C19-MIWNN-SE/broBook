@@ -33,7 +33,7 @@
                     <div class="text-white-50 small text-uppercase" th:text="${shownUser.role}">Rol</div>
                     <a th:if="${#authentication.name.equals(shownUser.username)}"
                        th:href="@{/info/edit/{id}(id=${shownUser.id})}"
-                       class="btn btn-primary">
+                       class="btn btn-primary mt-3">
                         Informatie toevoegen
                     </a>
                 </div>
@@ -91,9 +91,10 @@
 
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2 text-uppercase text-secondary fw-medium">
+                        <i class="bi bi-chat-quote fs-5 bio-icon opacity-50"></i>
                         Over mij
                     </div>
-                    <p class="text-secondary lh-lg small fst-italic" th:text="${shownUser.bio}">
+                    <p class="text-dark bio-text" th:text="${shownUser.bio}">
                         Hier komt een biografie. Daar staat informatie over de persoon, bijvoorbeeld hobby's,
                         sport, familie of huisdieren. Hier moet ruimte zijn voor een iets langer stuk tekst.
                     </p>

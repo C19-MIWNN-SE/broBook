@@ -32,7 +32,7 @@
                 <a class="nav-link px-3" sec:authorize="hasRole('ADMIN')" href="/user/all">Gebruikers</a>
                 <a class="nav-link px-3" sec:authorize="hasRole('ADMIN')"
                    href="/cohort/all">Alle cohorten</a>
-                <a class="nav-link px-3" sec:authorize="hasAnyRole('STUDENT','TEACHER')" href="/cohort/all">
+                <a class="nav-link px-3" sec:authorize="hasAnyRole('STUDENT','TEACHER')" href="/cohort/my">
                     Mijn cohort(en)
                 </a>
             </div>

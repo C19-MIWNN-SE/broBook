@@ -8,16 +8,14 @@ import nl.miwnn.ch19.binarybros.brobook.service.BroBookUserService;
 import nl.miwnn.ch19.binarybros.brobook.service.CohortService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Paul Rademaker
@@ -54,6 +52,15 @@ public class CohortController {
         BroBookUser loggedInUser = broBookUserService.getUserByUsername(principal.getName());
 
         cohortService.saveCohort(cohort, loggedInUser);
+        return "redirect:/cohort/details/" + cohort.getId();
+    }
+
+    @GetMapping("/cohort/my")
+    public String showMyCohort(@AuthenticationPrincipal BroBookUser user) {
+        List<Cohort> cohorts = cohortService.findByUser(user);
+        if (cohorts.size() == 1) {
+            return "redirect:/cohort/details/" + cohorts.get(0).getId();
+        }
         return "redirect:/cohort/all";
     }
 
@@ -79,6 +86,10 @@ public class CohortController {
             displayCohorts = cohortService.findAll();
             overviewTitle = "Alle Cohorten";
         }
+
+        displayCohorts = displayCohorts.stream()
+                .sorted(Comparator.comparing(Cohort::getStartDate).reversed())
+                .toList();
 
         Map<Long, List<BroBookUser>> visibleUsersMap = new HashMap<>();
         Map<Long, Integer> overflowMap = new HashMap<>();
